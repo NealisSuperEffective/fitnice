@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="assets/createActivity.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/vacanza.css">
+</head>
+
+<body class="background">
+    <header class="header" id="header"></header>
+    <nav>
+        <div class="navbar">
+            <div class="center">
+                <ul>
+                    <tr>
+                        <a href="index.html"> Home | </a>
+                    </tr>
+                    <tr>
+                        <a href="createItinerary.html"> Create Itinerary | </a>
+                    </tr>
+                    <tr>
+                        <a href="createActivity.html"> Create Activity | </a>
+                    </tr>
+                    <tr> <a href="getItineraryActivities.html"> Itinerary Details | </a>
+                    </tr>
+                    <tr> <a href="addActivityToItinerary.html"> Itinerary Activities | </a>
+                    </tr>
+                    <tr>
+                        <a href="aboutUs.html"> About Us </a>
+                    </tr>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="card">
+        <h2>Create Activity</h2>
+        <form class="card-content" id="create-playlist-form">
+            <p class="hidden error" id="error-message"> </p>
+            <p class="form-field">
+                <label>Activity CityCountry</label>
+                <input type="text" required class="validated-field" id="activity-cityCountry" placeholder="Barcelona, Spain"
+                   autofocus>
+            </p>
+            <p class="form-field">
+                <label>Activity Name</label>
+                <input type="text" id="activity-name" class="name" placeholder="Casa Battlo">
+            </p>
+            <p class="form-field">
+                <label>Activity Address</label>
+                <input type="text" id="activity-address" class="address" placeholder="Passeig de Gracia, 43, 08007 Barcelona, Spain">
+            </p>
+            <p class="form-field">
+                <label>Activity Type</label>
+                <select name="activity-type" id="activity-type" class="type">
+                    <option value="CULTURE">CULTURE</option>
+                    <option value="PARK">PARK</option>
+                    <option value="MUSEUM">MUSEUM</option>
+                    <option value="RESTAURANT">RESTAURANT</option>
+                    <option value="HOTEL">HOTEL</option>
+                    <option value="BEACH">BEACH</option>
+                    <option value="SKIING">SKIING</option>
+                    <option value="HIKING">HIKING</option>
+                    <option value="THEATRE">THEATRE</option>
+                    <option value="MUSIC">MUSIC</option>
+                    <option value="COMEDY">COMEDY</option>
+                    <option value="NATURE">NATURE</option>
+                    <option value="SPORTS">SPORTS</option>
+                    <option value="OTHER">OTHER</option>
+                </select>
+            </p>
+            </p>
+            <p class="form-field">
+                <label>Activity KidFriendly</label>
+                <select name="activity-kidFriendly" id="activity-kidFriendly" class="kidFriendly">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </p>
+            <p class="form-field">
+                <label>Activity WeatherPermitting</label>
+                <select name="activity-weatherPermitting" id="activity-weatherPermitting" class="weatherPermitting">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </p>
+            <p>
+                <a href="#" class="button" id="create-activity">Create Vacation Activity</a>
+            </p>
+        </form>
+    </div>
+</body>
+
+    <footer>
+        <div class= "footer">
+            <div class= "center">
+                <h4> NSS SE Cohort 2 MidStone Project</h4>
+                <h6> GitHub Repository <a href= "https://www.github.com"> here</a> </h6>
+            </div>
+        </div>
+    </footer>
+
+</html>

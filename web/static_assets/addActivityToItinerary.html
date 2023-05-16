@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="assets/addActivityToItinerary.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/vacanza.css"></head>
+
+<body class="background">
+<header class="header" id="header"></header>
+<nav>
+    <div class="navbar">
+        <div class="center">
+            <ul>
+                <tr>
+                    <a href="index.html"> Home | </a>
+                </tr>
+                <tr>
+                    <a href="createItinerary.html"> Create Itinerary | </a>
+                </tr>
+                <tr>
+                    <a href="createActivity.html"> Create Activity | </a>
+                </tr>
+                <tr> <a href="getItineraryActivities.html"> Itinerary Details | </a>
+                </tr>
+                <tr> <a href="addActivityToItinerary.html"> Itinerary Activities | </a>
+                </tr>
+                <tr>
+                    <a href="aboutUs.html"> About Us </a>
+                </tr>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="card">
+    <h2>Add/Remove Itinerary Activity</h2>
+    <form class="card-content" id="add-activity-form">
+        <p class="hidden error" id="error-message"> </p>
+        <p class="form-field">
+            <label>Itinerary Name</label>
+            <input type="text" required class="validated-field" id="itinerary-name" placeholder="NealGermany2023"
+                   autofocus>
+        </p>
+
+        <p class="form-field">
+            <label>Email</label>
+            <input type="text" id="email" required class="validated-field" placeholder="john.smith@gmail.com"
+                   data-tip="Must be the email address of the user that created the itinerary.">
+        </p>
+        <p class="form-field">
+            <label>Activity Name</label>
+            <input type="text" id="activity-name" required class="validated-field"  placeholder="Pergamon Museum"
+                   data-tip="">
+        </p>
+        <p class="form-field">
+            <label>City, Country of Activity</label>
+            <input type="text" id="activity-cityCountry" required class="validated-field"  placeholder="Berlin, Germany"
+                   data-tip="Must be formatted as City, Country">
+        </p>
+        <p>
+            <a href="#" class="button" id="add-activity">Add Activity</a>
+        </p>
+        <p>
+            <a href="#" class="button" id="remove-activity">Remove Activity</a>
+        </p>
+    </form>
+</div>
+<div class="card">
+    <p>
+        <h3>Search for Recommended Activities</h3>
+    </p>
+    <p class="form-field">
+        <label>City, Country of Activity</label>
+        <br>
+        <input type="text" id="search-activity-cityCountry" required class="validated-field"  placeholder="Berlin, Germany"
+               data-tip="Must be formatted as City, Country">
+    </p>
+    <p>
+        <a href="#" class="button" id="search-activity">Search Activities</a>
+    </p>
+    <div class="card hidden" id='activities-search-container'>
+        <h3>Activities </h3>
+        <h2 class="itinerary-name"></h2>
+        <div class="activities" id="activities"></div>
+    </div>
+
+</div>
+</body>
+
+<footer>
+    <div class= "footer">
+        <div class= "center">
+            <h4> NSS SE Cohort 2 MidStone Project</h4>
+            <h6> GitHub Repository <a href= "https://www.github.com"> here</a> </h6>
+        </div>
+    </div>
+</footer>
+
+</html>
+

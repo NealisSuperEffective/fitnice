@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+         <script type="text/javascript" src="assets/searchItineraries.js"></script>
+         <link rel="stylesheet" type="text/css" href="css/vacanza.css">
+</head>
+
+<body class="background">
+
+
+<header class="header"> <img src="images/header.jpg" width=99% length=99% align=left/></header>
+<nav>
+    <div class="navbar">
+        <div class="center">
+            <ul>
+                <tr>
+                    <a href="index.html"> Home | </a>
+                </tr>
+                <tr>
+                    <a href="createItinerary.html"> Create Itinerary | </a>
+                </tr>
+                <tr>
+                    <a href="createActivity.html"> Create Activity | </a>
+                </tr>
+                <tr> <a href="getItineraryActivities.html"> Itinerary Details | </a>
+                </tr>
+                <tr> <a href="addActivityToItinerary.html"> Itinerary Activities | </a>
+                </tr>
+                <tr>
+                    <a href="aboutUs.html"> About Us </a>
+                </tr>
+            </ul>
+        </div>
+    </div>
+</nav>
+        <div class="card">
+              <h2>Find Itinerary</h2>
+             <form class="card-content" id="search-itineraries-form">
+                   <p class="form-field">
+                        <label>Enter User's Email</label>
+                         <input type="text" class="validated-field" id="email" placeholder="" autofocus>
+                </p><p class="form-field">
+               <label>Enter Trip Name</label>
+               <input type="text" class="validated-field" id="tripName" placeholder="" autofocus>
+              </p>
+             </form>
+             <p class="button-group">
+                    <a href="" class="button" id="search-button">Search </a>
+            </p>
+        </p>
+    </div>
+    <div class="card hidden" id='search-results-container'>
+        <h3>Results for <span id="search-criteria-display"></span></h3>
+        <div id="search-results-display">
+        </div>
+    </div>
+</body>
+<footer>
+    <div class= "footer">
+        <div class= "center">
+            <h4> NSS SE Cohort 2 MidStone Project</h4>
+            <h6> GitHub Repository <a href= "https://www.github.com"> here</a> </h6>
+        </div>
+    </div>
+</footer>
+
+</html>

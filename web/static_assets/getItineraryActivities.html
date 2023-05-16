@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="assets/getItineraryActivities.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/vacanza.css">
+
+</head>
+
+<body class="background">
+<header class="header" id="header"></header>
+<nav>
+    <div class="navbar">
+        <div class="center">
+            <ul>
+                <tr>
+                    <a href="index.html"> Home | </a>
+                </tr>
+                <tr>
+                    <a href="createItinerary.html"> Create Itinerary | </a>
+                </tr>
+                <tr>
+                    <a href="createActivity.html"> Create Activity | </a>
+                </tr>
+                <tr> <a href="getItineraryActivities.html"> Itinerary Details | </a>
+                </tr>
+                <tr> <a href="addActivityToItinerary.html"> Itinerary Activities | </a>
+                </tr>
+                <tr>
+                    <a href="aboutUs.html"> About Us </a>
+                </tr>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="card">
+    <h2>View Details of An Itinerary</h2>
+    <form class="card-content" id="view-itinerary-activities-form">
+        <p class="hidden error" id="error-message"> </p>
+        <p class="form-field">
+            <label>Enter User's Email</label>
+            <input type="text" class="email" id="email" placeholder="john.smith@gmail.com" autofocus>
+        </p>
+        <p class="form-field">
+            <label>Enter Trip Name</label>
+            <input type="text" class="tripName" id="tripName" placeholder="ErinSpain2023" autofocus>
+        </p>
+    </form>
+        <p class="button-group">
+            <a href="#" class="button" id="activities-of-itinerary">View Itinerary Details</a>
+        </p>
+    <p class="button-group">
+        <a href="#" class="button" id="search-itineraries">Search for Trips</a>
+    </p>
+
+
+</div>
+    <div class="card hidden" id='activities-container'>
+        <h3>Activities </h3>
+        <h2 class="itinerary-name"></h2>
+        <div class="activities" id="activities"></div>
+    </div>
+    <div class="card hidden" id='activities-table-container'>
+        <h3>Activities Table</h3>
+        <h2 class="itinerary-name"></h2>
+        <div class="activities" id="activities-table-div"></div>
+        <ol id="activities-table"></ol>
+        <div class="activities" id="activitieslist"></div>
+        <ol class="activities" id ="activity"></ol>
+    </div>
+    <div class="card hidden" id='submit-results-container'>
+
+        <h2 class="itinerary-name"></h2>
+        <h4>Cities <span id="cities-title-display"></span></h4>
+        <div id="city-results-display"></div>
+        <h4>Tags <span id="tags-title-display"></span></h4>
+        <div id="tags-results-display"></div>
+        <h4>Users </h4>
+        <div id="users-display"></div>
+        <ol class="users" id ="user"></ol>
+
+    </div>
+
+<div class="card hidden" id='search-results-container'>
+    <h3>Itineraries </h3>
+    <div class="itineraries" id="itineraries"></div>
+</div>
+
+</div>
+</body>
+<footer>
+    <div class= "footer">
+        <div class= "center">
+            <h4> NSS SE Cohort 2 MidStone Project</h4>
+            <h6> GitHub Repository <a href= "https://www.github.com"> here</a> </h6>
+        </div>
+    </div>
+</footer>
+
+</html>

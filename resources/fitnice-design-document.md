@@ -46,6 +46,7 @@ U8. As a customer, I want to use my workout routines as a template for a workout
 * Adding to and retrieving a saved workout's exercises and their attributes.
 * Retrieving all workout plans a customer has created.
 * Retrieving all workouts a customer has created.
+* GSI retrieve most recent 10 workouts
 
 ### 4.2. Out of Scope
 
@@ -57,7 +58,6 @@ U8. As a customer, I want to use my workout routines as a template for a workout
 * Using a previous workout as a template for a new one
 * Reorganizing workout exercise order
 * Removing workouts
-* Using a previous workout as a template for a new workout
 
 ## 5. Proposed Architecture Overview
 

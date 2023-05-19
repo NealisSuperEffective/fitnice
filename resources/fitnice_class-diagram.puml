@@ -1,0 +1,110 @@
+@startuml
+
+interface Item
+
+class WorkoutRoutine {
+    -String name
+    -Set<String> tags
+    -String description
+    -List<String> exercises
+ }
+
+class Workout {
+    -String name
+    -Set<String> tags
+    -String description
+    -Map<String, List<Integer>> exercises
+}
+
+
+
+newpage
+class WorkoutRoutineDao {}
+class WorkoutDao {
+}
+class createWorkoutRoutineRequest {}
+class createWorkoutRoutineResponse {}
+class createWorkoutRoutineActivity {}
+
+class getWorkoutRoutineActivity {}
+class getWorkoutRoutineRequest {}
+class getWorkoutRoutineResponse {}
+
+class removeWorkoutRoutineActivity {}
+class removeWorkoutRoutineRequest {}
+class removeWorkoutRoutineResponse {}
+
+class updateWorkoutRoutineActivity {}
+class updateWorkoutRoutineRequest {}
+class updateWorkoutRoutineResponse {}
+
+class createWorkoutRequest {}
+class createWorkoutResponse {}
+class createWorkoutActivity {}
+
+class getWorkoutActivity {}
+class getWorkoutRequest {}
+class getWorkoutResponse {}
+
+class ModelConverter{}
+
+WorkoutRoutineDao --o createWorkoutRoutineActivity
+WorkoutRoutineDao --o getWorkoutRoutineActivity
+WorkoutRoutineDao --o removeWorkoutRoutineActivity
+WorkoutRoutineDao --o updateWorkoutRoutineActivity
+
+WorkoutDao --o createWorkoutActivity
+WorkoutDao --o getWorkoutActivity
+
+createWorkoutRoutineRequest --> createWorkoutRoutineActivity
+createWorkoutRoutineActivity --> createWorkoutRoutineResponse
+
+getWorkoutRoutineRequest --> getWorkoutRoutineActivity
+getWorkoutRoutineActivity --> getWorkoutRoutineResponse
+
+removeWorkoutRoutineRequest --> removeWorkoutRoutineActivity
+removeWorkoutRoutineActivity --> removeWorkoutRoutineResponse
+
+updateWorkoutRoutineRequest --> updateWorkoutRoutineActivity
+updateWorkoutRoutineActivity --> updateWorkoutRoutineResponse
+
+createWorkoutRequest --> createWorkoutActivity
+createWorkoutActivity --> createWorkoutResponse
+
+getWorkoutRequest --> getWorkoutActivity
+getWorkoutActivity --> getWorkoutResponse
+
+createWorkoutActivity--ModelConverter
+getWorkoutActivity--ModelConverter
+createWorkoutRoutineActivity -- ModelConverter
+getWorkoutRoutineActivity -- ModelConverter
+removeWorkoutRoutineActivity -- ModelConverter
+updateWorkoutRoutineActivity -- ModelConverter
+
+ModelConverter --> WorkoutRoutineModel
+ModelConverter --> WorkoutModel
+
+WorkoutRoutineModel --o createWorkoutRoutineResponse
+WorkoutRoutineModel --o getWorkoutRoutineResponse
+WorkoutRoutineModel --o removeWorkoutRoutineResponse
+WorkoutRoutineModel --o updateWorkoutRoutineResponse
+WorkoutModel --o createWorkoutResponse
+WorkoutModel --o getWorkoutResponse
+
+DynamoDBMapper--o WorkoutRoutineDao
+DynamoDBMapper--o WorkoutDao
+
+newpage
+createWorkoutRoutine.js <--> WorkoutRoutineHeader.js
+WorkoutRoutineHeader.js <--> WorkoutRoutinePlayListClient.js
+WorkoutRoutinePlayListClient.js <--> APIGatewayAWS
+APIGatewayAWS <--> createWorkoutRoutineActivity
+user <--> workoutroutine.html
+
+createWorkout.js <--> WorkoutHeader.js
+WorkoutHeader.js <--> WorkoutPlayListClient.js
+WorkoutPlayListClient.js <--> APIGatewayAWS
+APIGatewayAWS <--> createWorkoutActivity
+user <--> workout.html
+
+@enduml

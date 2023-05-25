@@ -9,6 +9,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.nashss.se.fitnice.metrics.MetricsPublisher;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,7 +21,7 @@ import java.util.Map;
  * Accesses data for an itinerary using {@link Itinerary} to represent the model in DynamoDB.
  */
 @Singleton
-public class ItineraryDao {
+public class WorkoutRoutineDao {
     private final DynamoDBMapper dynamoDbMapper;
     private final MetricsPublisher metricsPublisher;
 
@@ -31,7 +32,7 @@ public class ItineraryDao {
      * @param metricsPublisher the {@link MetricsPublisher} used to record metrics.
      */
     @Inject
-    public ItineraryDao(DynamoDBMapper dynamoDbMapper, MetricsPublisher metricsPublisher) {
+    public WorkoutRoutineDao(DynamoDBMapper dynamoDbMapper, MetricsPublisher metricsPublisher) {
         this.dynamoDbMapper = dynamoDbMapper;
         this.metricsPublisher = metricsPublisher;
     }
@@ -43,7 +44,7 @@ public class ItineraryDao {
      * @param tripName the Itinerary tripName
      * @return the stored Itinerary,
      */
-    public Itinerary getItinerary(String email, String tripName) {
+    public WorkoutRoutine getWorkoutRoutine(String email, String tripName) {
         Itinerary itinerary = this.dynamoDbMapper.load(Itinerary.class, email, tripName);
 
         if (itinerary == null) {

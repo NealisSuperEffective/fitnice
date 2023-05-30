@@ -13,7 +13,7 @@ import java.util.Set;
 @DynamoDBTable(tableName = "itineraries")
 public class  WorkoutRoutine {
     private String routineName;
-    private List<String> tags;
+    private Set<String> tags;
     private String description;
     private List<String> exercises;
 
@@ -50,7 +50,7 @@ public class  WorkoutRoutine {
         return exercises;
     }
 
-    public void setActivities(List<String> exercises) {
+    public void setExercises(List<String> exercises) {
         this.exercises = exercises;
     }
 
@@ -61,13 +61,13 @@ public class  WorkoutRoutine {
      * @return Set of tags for this itinerary.
      */
     @DynamoDBAttribute(attributeName = "tags")
-    public List<String> getTags() {
+    public Set<String> getTags() {
 
         if (null == tags) {
             return null;
         }
 
-        return new ArrayList<>(tags);
+        return tags;
     }
 
     /**
@@ -75,12 +75,12 @@ public class  WorkoutRoutine {
      *
      * @param tags Set of tags for this itinerary
      */
-    public void setTags(List<String> tags) {
+    public void setTags(Set<String> tags) {
         // see comment in getTags()
         if (null == tags) {
             this.tags = null;
         } else {
-            this.tags = new ArrayList<>(tags);
+            this.tags = tags;
         }
         this.tags = tags;
     }

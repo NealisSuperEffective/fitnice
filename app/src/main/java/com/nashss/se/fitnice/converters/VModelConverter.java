@@ -1,6 +1,8 @@
 package com.nashss.se.fitnice.converters;
 
+import com.nashss.se.fitnice.dynamodb.models.Workout;
 import com.nashss.se.fitnice.dynamodb.models.WorkoutRoutine;
+import com.nashss.se.fitnice.models.WorkoutModel;
 import com.nashss.se.fitnice.models.WorkoutRoutineModel;
 
 import java.util.ArrayList;
@@ -8,10 +10,10 @@ import java.util.List;
 
 public class VModelConverter {
     /**
-     * Converts an itinerary to an ItineraryModels.
+     * Converts a workoutRoutine to a WorkoutRoutineModel.
      *
-     * @param itinerary the Itinerary to convert to ItineraryModel.
-     * @return the converted ItineraryModel
+     * @param workoutRoutine the WorkoutRoutine to convert to WorkoutRoutineModel.
+     * @return the converted WorkoutRoutineModel
      */
     public WorkoutRoutineModel toWorkoutRoutineModel(WorkoutRoutine workoutRoutine) {
 
@@ -23,27 +25,26 @@ public class VModelConverter {
                 .build();
     }
     /**
-     * Converts an activity to an ActivityModel.
+     * Converts a workout to an WorkoutModel.
      *
-     * @param activity the activity  to convert to ActivityModel.
-     * @return The converted ActivityModel
+     * @param workout the workout  to convert to WorkoutModel.
+     * @return The converted WorkoutModel
      */
-    public ActivityModel toActivityModel(Activity activity) {
-        return ActivityModel.builder()
-                .withName(activity.getName())
-                .withCityCountry(activity.getCityCountry())
-                .withAddress(activity.getAddress())
-                .withTypeOfActivity(activity.getTYPE_OF_ACTIVITY())
-                .withKidFriendly(activity.getKidFriendly())
-                .withWeatherPermitting(activity.getWeatherPermitting())
+    public WorkoutModel toWorkoutModel(Workout workout) {
+        return WorkoutModel.builder()
+                .withDate(workout.getDate())
+                .withName(workout.getName())
+                .withTags(workout.getTags())
+                .withDescription(workout.getDescription())
+                .withExercises(workout.getExercises())
                 .build();
     }
 
     /**
-     * Converts a list of Itineraries to a list of ItineraryModels.
+     * Converts a list of WorkoutRoutines to a list of WorkoutRoutineModels.
      *
-     * @param itineraries The Itinerary to convert to ItineraryModels
-     * @return The converted list of ItineraryModels
+     * @param workoutRoutines The WorkoutRoutine to convert to WorkoutRoutineModels
+     * @return The converted list of WorkoutRoutineModels
      */
     public List<WorkoutRoutineModel> toWorkoutRoutineModelList(List<WorkoutRoutine> workoutRoutines) {
         List<WorkoutRoutineModel> workoutRoutineModels = new ArrayList<>();
@@ -56,17 +57,17 @@ public class VModelConverter {
     }
 
     /**
-     * Converts a list of activities to a list of ActivityModels.
+     * Converts a list of workouts to a list of WorkoutModels.
      *
-     * @param activities the activity  to convert to ActivityModels
-     * @return The converted list of ActivityModels
-     */public List<ActivityModel> toActivityModelList(List<Activity> activities) {
-        List<ActivityModel> activitiesModels = new ArrayList<>();
+     * @param workouts the workout  to convert to WorkoutModels
+     * @return The converted list of WorkoutModels
+     */public List<WorkoutModel> toWorkoutModelList(List<Workout> workouts) {
+        List<WorkoutModel> workoutModels = new ArrayList<>();
 
-        for (Activity a : activities) {
-            activitiesModels.add(toActivityModel(a));
+        for (Workout w : workouts) {
+            workoutModels.add(toWorkoutModel(w));
         }
 
-        return activitiesModels;
+        return workoutModels;
     }
 }

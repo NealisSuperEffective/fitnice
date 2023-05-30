@@ -9,6 +9,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.nashss.se.fitnice.dynamodb.models.WorkoutRoutine;
+import com.nashss.se.fitnice.exceptions.WorkoutRoutineNotFoundException;
+import com.nashss.se.fitnice.metrics.MetricsConstants;
 import com.nashss.se.fitnice.metrics.MetricsPublisher;
 
 import javax.inject.Inject;
@@ -41,18 +44,17 @@ public class WorkoutRoutineDao {
      * Returns the {@link Itinerary} corresponding to the specified email and tripName/
      *
      * @param email the Itinerary email
-     * @param tripName the Itinerary tripName
      * @return the stored Itinerary,
      */
-    public WorkoutRoutine getWorkoutRoutine(String email, String tripName) {
-        Itinerary itinerary = this.dynamoDbMapper.load(Itinerary.class, email, tripName);
+    public WorkoutRoutine getWorkoutRoutine(String routineName) {
+        WorkoutRoutine workoutRoutine = this.dynamoDbMapper.load(WorkoutRoutine.class, routineName);
 
-        if (itinerary == null) {
-            metricsPublisher.addCount(MetricsConstants.GETINTERARY_ITINERARYNOTFOUND_COUNT, 1);
-            throw new ItineraryNotFoundException("Could not find itinerary with email: " + email);
+        if (workoutRoutine == null) {
+            metricsPublisher.addCount(MetricsConstants.GETWORKOUTROUTINE_WORKOUTROUTINENOTFOUND_COUNT, 1);
+            throw new WorkoutRoutineNotFoundException("Could not find WorkoutRoutine with routineName: " + routineName);
         }
-        metricsPublisher.addCount(MetricsConstants.GETINTERARY_ITINERARYNOTFOUND_COUNT, 0);
-        return itinerary;
+        metricsPublisher.addCount(MetricsConstants.GETWORKOUTROUTINE_WORKOUTROUTINENOTFOUND_COUNT, 0);
+        return workoutRoutine;
     }
 
     /**
@@ -60,9 +62,9 @@ public class WorkoutRoutineDao {
      * @param itinerary The itinerary to save
      * @return The Itinerary object that was saved
      */
-    public Itinerary saveItinerary(Itinerary itinerary) {
-        this.dynamoDbMapper.save(itinerary);
-        return itinerary;
+    public WorkoutRoutine saveWorkoutRoutine(WorkoutRoutine workoutRoutine) {
+        this.dynamoDbMapper.save(workoutRoutine);
+        return workoutRoutine;
     }
     /**
      * Perform a search (via a "scan") of the itinerary table for itineraries matching the given criteria.
@@ -75,52 +77,52 @@ public class WorkoutRoutineDao {
      * @param criteria an array of String containing search criteria.
      * @return a List of Itinerary objects that match the search criteria.
      */
-    public List<Itinerary> searchItinerary (String[] criteria) {
-        DynamoDBScanExpression dynamoDBScanExpression = new DynamoDBScanExpression();
-
-        if (criteria.length > 0) {
-            Map<String, AttributeValue> valueMap = new HashMap<>();
-            String valueMapNamePrefix = ":c";
-
-            StringBuilder nameFilterExpression = new StringBuilder();
-            StringBuilder citiesFilterExpression = new StringBuilder();
-
-            for (int i = 0; i < criteria.length; i++) {
-                valueMap.put(valueMapNamePrefix + i,
-                        new AttributeValue().withS(criteria[i]));
-                nameFilterExpression.append(
-                        filterExpressionPart("tripName", valueMapNamePrefix, i));
-                citiesFilterExpression.append(
-                        filterExpressionPart("cities", valueMapNamePrefix, i));
-            }
-
-            dynamoDBScanExpression.setExpressionAttributeValues(valueMap);
-            dynamoDBScanExpression.setFilterExpression(
-                    "(" + nameFilterExpression + ") or (" + citiesFilterExpression + ")");
-        }
-
-        return this.dynamoDbMapper.scan(Itinerary.class, dynamoDBScanExpression);
-    }
-
-    private StringBuilder filterExpressionPart(String target, String valueMapNamePrefix, int position) {
-        String possiblyAnd = position == 0 ? "" : "and ";
-        return new StringBuilder()
-                .append(possiblyAnd)
-                .append("contains(")
-                .append(target)
-                .append(", ")
-                .append(valueMapNamePrefix).append(position)
-                .append(") ");
-    }
-    public List<Itinerary> searchItinerariesByEmail(String email) {
-        Itinerary itinerary = new Itinerary();
-        itinerary.setEmail(email);
-        DynamoDBQueryExpression<Itinerary> queryExpression = new DynamoDBQueryExpression<Itinerary>()
-                .withHashKeyValues(itinerary);
-        PaginatedQueryList<Itinerary> itineraries = dynamoDbMapper.query(Itinerary.class, queryExpression);
-        if(null == itineraries||itineraries.size() == 0){
-            throw new ItineraryNotFoundException("Could not find any itineraries associated with this email");
-        }
-        return itineraries;
-    }
+//    public List<Itinerary> searchItinerary (String[] criteria) {
+//        DynamoDBScanExpression dynamoDBScanExpression = new DynamoDBScanExpression();
+//
+//        if (criteria.length > 0) {
+//            Map<String, AttributeValue> valueMap = new HashMap<>();
+//            String valueMapNamePrefix = ":c";
+//
+//            StringBuilder nameFilterExpression = new StringBuilder();
+//            StringBuilder citiesFilterExpression = new StringBuilder();
+//
+//            for (int i = 0; i < criteria.length; i++) {
+//                valueMap.put(valueMapNamePrefix + i,
+//                        new AttributeValue().withS(criteria[i]));
+//                nameFilterExpression.append(
+//                        filterExpressionPart("tripName", valueMapNamePrefix, i));
+//                citiesFilterExpression.append(
+//                        filterExpressionPart("cities", valueMapNamePrefix, i));
+//            }
+//
+//            dynamoDBScanExpression.setExpressionAttributeValues(valueMap);
+//            dynamoDBScanExpression.setFilterExpression(
+//                    "(" + nameFilterExpression + ") or (" + citiesFilterExpression + ")");
+//        }
+//
+//        return this.dynamoDbMapper.scan(Itinerary.class, dynamoDBScanExpression);
+//    }
+//
+//    private StringBuilder filterExpressionPart(String target, String valueMapNamePrefix, int position) {
+//        String possiblyAnd = position == 0 ? "" : "and ";
+//        return new StringBuilder()
+//                .append(possiblyAnd)
+//                .append("contains(")
+//                .append(target)
+//                .append(", ")
+//                .append(valueMapNamePrefix).append(position)
+//                .append(") ");
+//    }
+//    public List<Itinerary> searchItinerariesByEmail(String email) {
+//        Itinerary itinerary = new Itinerary();
+//        itinerary.setEmail(email);
+//        DynamoDBQueryExpression<Itinerary> queryExpression = new DynamoDBQueryExpression<Itinerary>()
+//                .withHashKeyValues(itinerary);
+//        PaginatedQueryList<Itinerary> itineraries = dynamoDbMapper.query(Itinerary.class, queryExpression);
+//        if(null == itineraries||itineraries.size() == 0){
+//            throw new ItineraryNotFoundException("Could not find any itineraries associated with this email");
+//        }
+//        return itineraries;
+//    }
 }

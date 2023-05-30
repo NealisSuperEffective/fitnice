@@ -1,9 +1,5 @@
 package com.nashss.se.fitnice.dynamodb;
 
-import VacanzaLambda.src.main.java.musicplaylistservice.dynamodb.models.Itinerary;
-import VacanzaLambda.src.main.java.musicplaylistservice.exceptions.ItineraryNotFoundException;
-import VacanzaLambda.src.main.java.musicplaylistservice.metrics.MetricsConstants;
-import VacanzaLambda.src.main.java.musicplaylistservice.metrics.MetricsPublisher;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
@@ -21,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Accesses data for an itinerary using {@link Itinerary} to represent the model in DynamoDB.
+ * Accesses data for a workoutRoutine using {@link WorkoutRoutine} to represent the model in DynamoDB.
  */
 @Singleton
 public class WorkoutRoutineDao {
@@ -29,7 +25,7 @@ public class WorkoutRoutineDao {
     private final MetricsPublisher metricsPublisher;
 
     /**
-     * Instantiates a ItineraryDao object.
+     * Instantiates a WorkoutRoutineDao object.
      *
      * @param dynamoDbMapper   the {@link DynamoDBMapper} used to interact with the itinerary table
      * @param metricsPublisher the {@link MetricsPublisher} used to record metrics.
@@ -41,9 +37,9 @@ public class WorkoutRoutineDao {
     }
 
     /**
-     * Returns the {@link Itinerary} corresponding to the specified email and tripName/
+     * Returns the {@link WorkoutRoutine} corresponding to the specified routineName/
      *
-     * @param email the Itinerary email
+     * @param routineName the WorkoutRoutine routineName
      * @return the stored Itinerary,
      */
     public WorkoutRoutine getWorkoutRoutine(String routineName) {
@@ -58,9 +54,9 @@ public class WorkoutRoutineDao {
     }
 
     /**
-     * Saves (creates or updates) the given itinerary
-     * @param itinerary The itinerary to save
-     * @return The Itinerary object that was saved
+     * Saves (creates or updates) the given WorkoutRoutine
+     * @param workoutRoutine The WorkoutRoutine to save
+     * @return The WorkoutRoutine object that was saved
      */
     public WorkoutRoutine saveWorkoutRoutine(WorkoutRoutine workoutRoutine) {
         this.dynamoDbMapper.save(workoutRoutine);

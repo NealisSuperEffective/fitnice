@@ -13,16 +13,16 @@ import javax.inject.Singleton;
 import java.util.List;
 
 /**
- * Accesses data for an activity using {@link Activity} to represent the model in DynamoDB.
+ * Accesses data for a workout using {@link Workout} to represent the model in DynamoDB.
  */
 @Singleton
 public class WorkoutDao {
     private final DynamoDBMapper dynamoDbMapper;
     private final MetricsPublisher metricsPublisher;
     /**
-     * Instantiates an ActivityDao object.
+     * Instantiates an WorkoutDao object.
      *
-     * @param dynamoDbMapper the {@link DynamoDBMapper} used to interact with the activities table
+     * @param dynamoDbMapper the {@link DynamoDBMapper} used to interact with the workouts table
      */
     @Inject
     public WorkoutDao(DynamoDBMapper dynamoDbMapper, MetricsPublisher metricsPublisher) {
@@ -30,13 +30,13 @@ public class WorkoutDao {
         this.metricsPublisher = metricsPublisher;
     }
     /**
-     * Retrieves an Activity by cityCountry and name.
+     * Retrieves a Workout by date and name.
      *
-     * If not found, throws ActivityNotFoundException.
+     * If not found, throws WorkoutNotFoundException.
      *
-     * @param cityCountry The cityCountry to look up
-     * @param name The activity name to look up
-     * @return The corresponding Activity if found
+     * @param date The date to look up
+     * @param name The workout name to look up
+     * @return The corresponding Workout if found
      */
     public Workout getWorkout(String date, String name) {
         Workout workout = dynamoDbMapper.load(Workout.class, name, date);
@@ -50,9 +50,9 @@ public class WorkoutDao {
 
     }
     /**
-     * Saves (creates or updates) the given activities
-     * @param activity The activity to save
-     * @return The Activity object that was saved
+     * Saves (creates or updates) the given workout
+     * @param workout The Workout to save
+     * @return The Workout object that was saved
      */
     public Workout saveWorkout(Workout workout) {
         this.dynamoDbMapper.save(workout);
@@ -60,9 +60,9 @@ public class WorkoutDao {
     }
 
     /**
-     * Searches the activities table by cityCountry
-     * @param cityCountry The cityCountry to search for
-     * @return activityList the activities that were found
+     * Searches the workouts table by name
+     * @param name The name to search for
+     * @return workoutList the workouts that were found
      */
     public List<Workout> getWorkoutByName(String name) {
         Workout workout = new Workout();

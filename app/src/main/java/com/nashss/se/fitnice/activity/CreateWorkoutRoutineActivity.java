@@ -7,11 +7,10 @@ import com.nashss.se.fitnice.dynamodb.models.Workout;
 import com.nashss.se.fitnice.dynamodb.models.WorkoutRoutine;
 import com.nashss.se.fitnice.exceptions.InvalidAttributeValueException;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
-
 public class CreateWorkoutRoutineActivity {
     private final Logger log = LogManager.getLogger();
     private final WorkoutRoutineDao workoutRoutineDao;
@@ -43,7 +42,7 @@ public class CreateWorkoutRoutineActivity {
         log.info("Received CreateRequest {}", createWorkoutRoutineRequest);
 
         if (!MusicPlaylistServiceUtils.isValidString(createWorkoutRoutineRequest.getRoutineName())) {
-            throw new InvalidAttributeValueException("WorkoutRoutine name [" + createWorkoutRoutineRequest.getName() +
+            throw new InvalidAttributeValueException("WorkoutRoutine name [" + createWorkoutRoutineRequest.getRoutineName() +
                     "] contains illegal characters");
         }
 
@@ -51,9 +50,9 @@ public class CreateWorkoutRoutineActivity {
         if (createWorkoutRoutineRequest.getTags() != null) {
             workoutRoutineTags = new ArrayList<>(createWorkoutRoutineRequest.getTags());
         }
-        List<String> workoutRoutineDescription = null;
+        String workoutRoutineDescription = null;
         if (createWorkoutRoutineRequest.getDescription() != null) {
-            workoutRoutineDescription = new ArrayList<>(createWorkoutRoutineRequest.getDescription());
+            workoutRoutineDescription = createWorkoutRoutineRequest.getDescription();
         }
         List<String> workoutRoutineExercises = null;
         if (createWorkoutRoutineRequest.getExercises() != null) {

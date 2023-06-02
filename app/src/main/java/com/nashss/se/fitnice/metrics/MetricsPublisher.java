@@ -4,7 +4,6 @@ import com.amazonaws.services.cloudwatch.AmazonCloudWatch;
 import com.amazonaws.services.cloudwatch.model.MetricDatum;
 import com.amazonaws.services.cloudwatch.model.PutMetricDataRequest;
 import com.amazonaws.services.cloudwatch.model.StandardUnit;
-import com.nashss.se.fitnice.metrics.MetricsConstants;
 
 import javax.inject.Inject;
 import java.awt.*;
@@ -65,8 +64,6 @@ public class MetricsPublisher {
                                                         final StandardUnit unit) {
 
         final Dimension service = new Dimension()
-
-
                 .withName(MetricsConstants.SERVICE)
                 .withValue(MetricsConstants.SERVICE_NAME);
 

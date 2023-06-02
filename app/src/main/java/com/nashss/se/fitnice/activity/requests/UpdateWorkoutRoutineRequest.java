@@ -4,15 +4,16 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.util.List;
+import java.util.Set;
 
 @JsonDeserialize(builder = UpdateWorkoutRoutineRequest.Builder.class)
 public class UpdateWorkoutRoutineRequest {
     private String routineName;
-    private List<String> tags;
+    private Set<String> tags;
     private String description;
     private List<String> exercises;
 
-    private UpdateWorkoutRoutineRequest(String routineName, List<String> tags, String description, List<String> exercises) {
+    private UpdateWorkoutRoutineRequest(String routineName, Set<String> tags, String description, List<String> exercises) {
         this.routineName = routineName;
         this.tags = tags;
         this.description = description;
@@ -23,7 +24,7 @@ public class UpdateWorkoutRoutineRequest {
         return routineName;
     }
 
-    public List<String> getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 

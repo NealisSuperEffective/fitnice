@@ -2,15 +2,19 @@ package com.nashss.se.fitnice.activity;
 
 import com.nashss.se.fitnice.activity.requests.CreateWorkoutRoutineRequest;
 import com.nashss.se.fitnice.activity.results.CreateWorkoutRoutineResult;
+import com.nashss.se.fitnice.converters.VModelConverter;
 import com.nashss.se.fitnice.dynamodb.WorkoutRoutineDao;
-import com.nashss.se.fitnice.dynamodb.models.Workout;
 import com.nashss.se.fitnice.dynamodb.models.WorkoutRoutine;
 import com.nashss.se.fitnice.exceptions.InvalidAttributeValueException;
+import com.nashss.se.fitnice.models.WorkoutRoutineModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 public class CreateWorkoutRoutineActivity {
     private final Logger log = LogManager.getLogger();
     private final WorkoutRoutineDao workoutRoutineDao;
@@ -46,9 +50,9 @@ public class CreateWorkoutRoutineActivity {
                     "] contains illegal characters");
         }
 
-        List<String> workoutRoutineTags = null;
+        Set<String> workoutRoutineTags = null;
         if (createWorkoutRoutineRequest.getTags() != null) {
-            workoutRoutineTags = new ArrayList<>(createWorkoutRoutineRequest.getTags());
+            workoutRoutineTags = createWorkoutRoutineRequest.getTags();
         }
         String workoutRoutineDescription = null;
         if (createWorkoutRoutineRequest.getDescription() != null) {
@@ -61,16 +65,16 @@ public class CreateWorkoutRoutineActivity {
 
         WorkoutRoutine newWorkoutRoutine = new WorkoutRoutine();
 
-        newWorkoutRoutine.setRoutineName(createWorkoutRoutineRequest.getName());
+        newWorkoutRoutine.setRoutineName(createWorkoutRoutineRequest.getRoutineName());
         newWorkoutRoutine.setTags(workoutRoutineTags);
         newWorkoutRoutine.setDescription(workoutRoutineDescription);
         newWorkoutRoutine.setExercises(workoutRoutineExercises);
 
-        itineraryDao.saveItinerary(newItinerary);
+        workoutRoutineDao.saveWorkoutRoutine(newWorkoutRoutine);
 
-        ItineraryModel itineraryModel = new VModelConverter().toItineraryModel(newItinerary);
-        return CreateItineraryResult.builder()
-                .withItineraryModel(itineraryModel)
+        WorkoutRoutineModel workoutRoutineModel = new VModelConverter().toWorkoutRoutineModel(newWorkoutRoutine);
+        return CreateWorkoutRoutineResult.builder()
+                .withWorkoutRoutineModel(workoutRoutineModel)
                 .build();
     }
 }

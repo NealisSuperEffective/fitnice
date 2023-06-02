@@ -34,7 +34,7 @@ public class GetWorkoutRoutineActivity {
      * @return getItineraryResult result object containing the API defined {@link ItineraryModel}
      */
     public GetWorkoutRoutineResult handleRequest(final GetWorkoutRoutineRequest getWorkoutRoutineRequest) {
-        log.info("Received GetItineraryRequest {}", getWorkoutRoutineRequest);
+        log.info("Received GetWorkoutRoutineRequest {}", getWorkoutRoutineRequest);
         String routineName = getWorkoutRoutineRequest.getRoutineName();
         WorkoutRoutine workoutRoutine = workoutRoutineDao.getWorkoutRoutine(routineName);
         WorkoutRoutineModel workoutRoutineModel = new VModelConverter().toWorkoutRoutineModel(workoutRoutine);

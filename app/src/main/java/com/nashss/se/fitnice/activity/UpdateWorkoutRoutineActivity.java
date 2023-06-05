@@ -10,6 +10,7 @@ import com.nashss.se.fitnice.exceptions.WorkoutRoutineNotFoundException;
 import com.nashss.se.fitnice.metrics.MetricsConstants;
 import com.nashss.se.fitnice.metrics.MetricsPublisher;
 import com.nashss.se.fitnice.models.WorkoutRoutineModel;
+import com.nashss.se.fitnice.utils.ServiceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,7 +58,7 @@ public class UpdateWorkoutRoutineActivity {
         if (workoutRoutine == null) {
             throw new WorkoutRoutineNotFoundException("Playlist with " + updateWorkoutRoutineRequest.getRoutineName() + " not found.");
         }
-        if (!MusicPlaylistServiceUtils.isValidString(updateWorkoutRoutineRequest.getRoutineName())) {
+        if (!ServiceUtils.isValidString(updateWorkoutRoutineRequest.getRoutineName())) {
             metricsPublisher.addCount(MetricsConstants.UPDATEWORKOUTROUTINE_INVALIDATTRIBUTEVALUE_COUNT, 1);
             throw new InvalidAttributeValueException("Illegal character found in name.");
         }

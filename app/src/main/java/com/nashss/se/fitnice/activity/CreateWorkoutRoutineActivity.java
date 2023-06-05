@@ -7,6 +7,7 @@ import com.nashss.se.fitnice.dynamodb.WorkoutRoutineDao;
 import com.nashss.se.fitnice.dynamodb.models.WorkoutRoutine;
 import com.nashss.se.fitnice.exceptions.InvalidAttributeValueException;
 import com.nashss.se.fitnice.models.WorkoutRoutineModel;
+import com.nashss.se.fitnice.utils.ServiceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -45,7 +46,7 @@ public class CreateWorkoutRoutineActivity {
     public CreateWorkoutRoutineResult handleRequest(final CreateWorkoutRoutineRequest createWorkoutRoutineRequest) {
         log.info("Received CreateRequest {}", createWorkoutRoutineRequest);
 
-        if (!MusicPlaylistServiceUtils.isValidString(createWorkoutRoutineRequest.getRoutineName())) {
+        if (!ServiceUtils.isValidString(createWorkoutRoutineRequest.getRoutineName())) {
             throw new InvalidAttributeValueException("WorkoutRoutine name [" + createWorkoutRoutineRequest.getRoutineName() +
                     "] contains illegal characters");
         }

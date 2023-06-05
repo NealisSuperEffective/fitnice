@@ -1,5 +1,6 @@
 package com.nashss.se.fitnice.dependancy;
 
+import com.nashss.se.fitnice.activity.*;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -14,56 +15,56 @@ public interface ServiceComponent {
     /**
      * Provides the relevant activity.
      *
-     * @return CreateItineraryActivity
+     * @return CreateWorkoutRoutineActivity
      */
-    CreateItineraryActivity provideCreateItineraryActivity();
+    CreateWorkoutRoutineActivity provideCreateWorkoutRoutineActivity();
 
     /**
      * Provides the relevant activity.
      *
-     * @return GetItineraryActivity
+     * @return GetWorkoutRoutineActivity
      */
-    GetItineraryActivity provideGetItineraryActivity();
+    GetWorkoutRoutineActivity provideGetWorkoutRoutineActivity();
+
+//    /**
+//     * Provides the relevant activity.
+//     *
+//     * @return SearchItinerariesActivity
+//     */
+//    SearchItinerariesActivity provideSearchItinerariesActivity();
 
     /**
      * Provides the relevant activity.
      *
-     * @return SearchItinerariesActivity
+     * @return CreateWorkoutActivity
      */
-    SearchItinerariesActivity provideSearchItinerariesActivity();
+    CreateWorkoutActivity provideCreateWorkoutActivity();
 
     /**
      * Provides the relevant activity.
      *
-     * @return CreateActivityActivity
+     * @return GetWorkoutActivity
      */
-    CreateActivityActivity provideCreateActivityActivity();
+    GetWorkoutActivity provideGetWorkoutActivity();
 
     /**
      * Provides the relevant activity.
      *
-     * @return GetItineraryActivitiesActivity
+     * @return  UpdateWorkoutRoutineActivity
      */
-    GetItineraryActivitiesActivity provideGetItineraryActivitiesActivity();
+    UpdateWorkoutRoutineActivity provideUpdateWorkoutRoutineActivity();
 
-    /**
-     * Provides the relevant activity.
-     *
-     * @return  AddActivityToItineraryActivity
-     */
-    AddActivityToItineraryActivity provideAddActivityToItineraryActivity();
+//    /**
+//     * Provides the relevant activity.
+//     *
+//     * @return  RemoveWorkoutRoutineActivity
+//     */
+//    RemoveWorkoutRoutineActivity provideRemoveWorkoutRoutineActivity();
 
-    /**
-     * Provides the relevant activity.
-     *
-     * @return  RemoveActivityFromItineraryActivity
-     */
-    RemoveActivityFromItineraryActivity provideRemoveActivityFromItineraryActivity();
-
-    /**
-     * Provides the relevant activity.
-     *
-     * @return SearchActivitiesActivity
-     */
-    SearchActivitiesActivity provideSearchActivitiesActivity();
+//    /**
+//     * Provides the relevant activity.
+//     *
+//     * @return SearchActivitiesActivity
+//     */
+//    SearchActivitiesActivity provideSearchActivitiesActivity();
 }

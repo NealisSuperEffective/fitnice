@@ -54,7 +54,7 @@ public class UpdateWorkoutRoutineRequest {
     @JsonPOJOBuilder
     public static class Builder {
         private String routineName;
-        private List<String> tags;
+        private Set<String> tags;
         private String description;
         private List<String> exercises;
 
@@ -63,7 +63,7 @@ public class UpdateWorkoutRoutineRequest {
             return this;
         }
 
-        public Builder withTags(List<String> tags) {
+        public Builder withTags(Set<String> tags) {
             this.tags = tags;
             return this;
         }

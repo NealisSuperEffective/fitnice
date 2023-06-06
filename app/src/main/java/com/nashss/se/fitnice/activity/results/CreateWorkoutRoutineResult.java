@@ -28,7 +28,7 @@ public class CreateWorkoutRoutineResult {
     public static class Builder {
         private WorkoutRoutineModel workoutRoutineModel;
 
-        public Builder withWorkoutroutineModel(WorkoutRoutineModel workoutRoutineModel) {
+        public Builder withWorkoutRoutineModel(WorkoutRoutineModel workoutRoutineModel) {
             this.workoutRoutineModel = workoutRoutineModel;
             return this;
         }

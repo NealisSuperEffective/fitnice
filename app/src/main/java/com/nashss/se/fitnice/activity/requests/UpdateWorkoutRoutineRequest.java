@@ -1,45 +1,48 @@
 package com.nashss.se.fitnice.activity.requests;
 
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.util.List;
 import java.util.Set;
 
-import static com.nashss.se.fitnice.utils.CollectionUtils.copyToList;
-
-@JsonDeserialize(builder = CreateWorkoutRoutineRequest.Builder.class)
-public class CreateWorkoutRoutineRequest {
+@JsonDeserialize(builder = UpdateWorkoutRoutineRequest.Builder.class)
+public class UpdateWorkoutRoutineRequest {
     private String routineName;
     private Set<String> tags;
     private String description;
     private List<String> exercises;
 
-    private CreateWorkoutRoutineRequest(String routineName, String description, List<String> exercises, Set<String> tags) {
+    private UpdateWorkoutRoutineRequest(String routineName, Set<String> tags, String description, List<String> exercises) {
         this.routineName = routineName;
-        this.description = description;
         this.tags = tags;
+        this.description = description;
         this.exercises = exercises;
     }
+
     public String getRoutineName() {
         return routineName;
     }
-    public String getDescription() {
-        return description;
-    }
+
     public Set<String> getTags() {
         return tags;
     }
-    public List<String> getExercises() {return copyToList(exercises);}
+
+    public String getDescription() {
+        return description;
+    }
+
+    public List<String> getExercises() {
+        return exercises;
+    }
 
     @Override
     public String toString() {
-        return "CreateWorkoutRoutineRequest{" +
-                "WorkoutRoutine name='" + routineName + '\'' +
-                ", tags=" + tags + '\'' +
-                ", description=" + description + '\'' +
-                ", exercises=" + exercises +
+        return "UpdateWorkoutRoutineRequest{" +
+                "routineName='" + routineName + '\'' +
+                ", tags='" + tags + '\'' +
+                ", description='" + description + '\'' +
+                ", exercises='" + exercises + '\'' +
                 '}';
     }
 
@@ -60,21 +63,23 @@ public class CreateWorkoutRoutineRequest {
             return this;
         }
 
+        public Builder withTags(Set<String> tags) {
+            this.tags = tags;
+            return this;
+        }
+
         public Builder withDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public Builder withTags(Set<String> tags) {
-            this.tags = tags;
-            return this;
-        }
         public Builder withExercises(List<String> exercises) {
-            this.exercises = copyToList(exercises);
+            this.exercises = exercises;
             return this;
         }
-        public CreateWorkoutRoutineRequest build() {
-            return new CreateWorkoutRoutineRequest(routineName, description, exercises, tags);
+
+        public UpdateWorkoutRoutineRequest build() {
+            return new UpdateWorkoutRoutineRequest(routineName, tags, description, exercises);
         }
     }
 }

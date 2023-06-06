@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Represents a record in the itineraries table.
  */
-@DynamoDBTable(tableName = "itineraries")
+@DynamoDBTable(tableName = "workoutRoutines")
 public class  WorkoutRoutine {
     private String routineName;
     private Set<String> tags;

@@ -31,19 +31,18 @@ public class WorkoutDao {
     }
     /**
      * Retrieves a Workout by date and name.
-     *
+     * <p>
      * If not found, throws WorkoutNotFoundException.
      *
      * @param date The date to look up
-     * @param name The workout name to look up
      * @return The corresponding Workout if found
      */
-    public Workout getWorkout(String date, String name) {
-        Workout workout = dynamoDbMapper.load(Workout.class, name, date);
+    public Workout getWorkout(String date) {
+        Workout workout = dynamoDbMapper.load(Workout.class, date);
         if (null == workout) {
             metricsPublisher.addCount(MetricsConstants.GETWORKOUT_WORKOUTNOTFOUND_COUNT, 1);
             throw new WorkoutNotFoundException(
-                    String.format("Could not find Workout with name '%s' and date %s", name, date));
+                    String.format("Could not find Workout with date %s", date));
         }
         metricsPublisher.addCount(MetricsConstants.GETWORKOUT_WORKOUTNOTFOUND_COUNT, 0);
         return workout;

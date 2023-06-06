@@ -1,7 +1,5 @@
 package com.nashss.se.fitnice.activity.requests;
 
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.util.List;
@@ -9,22 +7,24 @@ import java.util.Set;
 
 import static com.nashss.se.fitnice.utils.CollectionUtils.copyToList;
 
-@JsonDeserialize(builder = CreateWorkoutRoutineRequest.Builder.class)
-public class CreateWorkoutRoutineRequest {
-    private String routineName;
+public class CreateWorkoutRequest {
+    private String date;
+    private String name;
     private Set<String> tags;
     private String description;
     private List<String> exercises;
 
-    private CreateWorkoutRoutineRequest(String routineName, String description, List<String> exercises, Set<String> tags) {
-        this.routineName = routineName;
+    private CreateWorkoutRequest(String date, String name, String description, List<String> exercises, Set<String> tags) {
+        this.date = date;
+        this.name = name;
         this.description = description;
         this.tags = tags;
         this.exercises = exercises;
     }
-    public String getRoutineName() {
-        return routineName;
+    public String getName() {
+        return name;
     }
+    public String getDate() {return date; }
     public String getDescription() {
         return description;
     }
@@ -35,8 +35,9 @@ public class CreateWorkoutRoutineRequest {
 
     @Override
     public String toString() {
-        return "CreateWorkoutRoutineRequest{" +
-                "WorkoutRoutine name='" + routineName + '\'' +
+        return "CreateWorkoutRequest{" +
+                "Workout name='" + name + '\'' +
+                ", date=" + date + '\'' +
                 ", tags=" + tags + '\'' +
                 ", description=" + description + '\'' +
                 ", exercises=" + exercises +
@@ -44,37 +45,43 @@ public class CreateWorkoutRoutineRequest {
     }
 
     //CHECKSTYLE:OFF:Builder
-    public static Builder builder() {
-        return new Builder();
+    public static CreateWorkoutRequest.Builder builder() {
+        return new CreateWorkoutRequest.Builder();
     }
 
     @JsonPOJOBuilder
     public static class Builder {
-        private String routineName;
+        private String date;
+        private String name;
         private Set<String> tags;
         private String description;
         private List<String> exercises;
 
-        public Builder withRoutineName(String routineName) {
-            this.routineName = routineName;
+        public CreateWorkoutRequest.Builder withDate(String date) {
+            this.date = date;
             return this;
         }
 
-        public Builder withDescription(String description) {
+        public CreateWorkoutRequest.Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public CreateWorkoutRequest.Builder withDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public Builder withTags(Set<String> tags) {
+        public CreateWorkoutRequest.Builder withTags(Set<String> tags) {
             this.tags = tags;
             return this;
         }
-        public Builder withExercises(List<String> exercises) {
+        public CreateWorkoutRequest.Builder withExercises(List<String> exercises) {
             this.exercises = copyToList(exercises);
             return this;
         }
-        public CreateWorkoutRoutineRequest build() {
-            return new CreateWorkoutRoutineRequest(routineName, description, exercises, tags);
+        public CreateWorkoutRequest build() {
+            return new CreateWorkoutRequest(date, name, description, exercises, tags);
         }
     }
 }

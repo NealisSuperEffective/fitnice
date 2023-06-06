@@ -1,229 +1,229 @@
-#AWSTemplateFormatVersion: '2010-09-09'
-#Transform: AWS::Serverless-2016-10-31
-#Description: >
-#  Music Playlist Service
-#
-#Parameters:
-#
-#  CognitoDomain:
-#    Type: String
-#    Description: A name for the cognito Domain
-#    Default: "midstoneprojectteamfive"
-#
-#  S3Bucket:
-#    Type: String
-#    Description: Parameter to specify the S3 Bucket to use for deployment
-#
-#  FrontendDeployment:
-#    Default: remote
-#    Type: String
-#    AllowedValues:
-#      - local
-#      - remote
-#    ConstraintDescription: Must specify 'local' or 'remote' for FrontendDeployment.
-#
-#Conditions:
-#  DeployCloudFront: !Equals
-#    - !Ref FrontendDeployment
-#    - remote
-#
-#Globals:
-#  Function:
-#    Timeout: 20
-#
-#  Api:
-#    Cors:
-#      AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
-#      AllowHeaders: "'content-type,authorization'"
-#      AllowOrigin: "'*'"
-#    Auth:
-#      DefaultAuthorizer: CognitoAuthorizer
-#      AddDefaultAuthorizerToCorsPreflight: false
-#      Authorizers:
-#        CognitoAuthorizer:
-#          UserPoolArn: !GetAtt UserPool.Arn
-#
-#Resources:
-#
-#  #-----------------------------------------------------
-#  # Cognito Configuration for user management
-#  #-----------------------------------------------------
-#
-#  UserPool:
-#    Type: AWS::Cognito::UserPool
-#    Properties:
-#      AccountRecoverySetting:
-#        RecoveryMechanisms:
-#          - Name: verified_email
-#            Priority: 1
-#      UsernameAttributes:
-#        - email
-#      UsernameConfiguration:
-#        CaseSensitive: false
-#      AutoVerifiedAttributes:
-#        - email
-#      UserPoolName: !Sub ${CognitoDomain}-user-pool
-#      Schema:
-#        - Name: email
-#          AttributeDataType: String
-#          Mutable: false
-#          Required: true
-#        - Name: name
-#          AttributeDataType: String
-#          Mutable: true
-#          Required: true
-#
-#  UserPoolClient:
-#    Type: AWS::Cognito::UserPoolClient
-#    Properties:
-#      UserPoolId: !Ref UserPool
-#      AllowedOAuthFlowsUserPoolClient: true
-#      CallbackURLs:
-#        - http://localhost:8000
-#        - !If
-#          - DeployCloudFront
-#          - !Sub "https://${CloudfrontDistribution.DomainName}"
-#          - !Ref "AWS::NoValue"
-#      LogoutURLs:
-#        - http://localhost:8000
-#        - !If
-#          - DeployCloudFront
-#          - !Sub "https://${CloudfrontDistribution.DomainName}"
-#          - !Ref "AWS::NoValue"
-#      AllowedOAuthFlows:
-#        - code
-#        - implicit
-#      AllowedOAuthScopes:
-#        - phone
-#        - email
-#        - openid
-#        - profile
-#      SupportedIdentityProviders:
-#        - COGNITO
-#      PreventUserExistenceErrors: ENABLED
-#
-#  UserPoolDomain:
-#    Type: AWS::Cognito::UserPoolDomain
-#    Properties:
-#      Domain: !Ref CognitoDomain
-#      UserPoolId: !Ref UserPool
-#
-#
-#  #-----------------------------------------------------
-#  # CloudFront Configuration
-#  #-----------------------------------------------------
-#
-#  CloudFrontOriginAccessIdentity:
-#    Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
-#    Condition: DeployCloudFront
-#    Properties:
-#      CloudFrontOriginAccessIdentityConfig:
-#        Comment: 'Serverless frontend website'
-#
-#  CloudfrontDistribution:
-#    Type: "AWS::CloudFront::Distribution"
-#    Condition: DeployCloudFront
-#    Properties:
-#      DistributionConfig:
-#        Comment: "Cloudfront distribution for serverless website"
-#        DefaultRootObject: "index.html"
-#        Enabled: true
-#        HttpVersion: http2
-#        PriceClass: PriceClass_100
-#        # List of origins that Cloudfront will connect to
-#        Origins:
-#          - Id: s3-website
-#            DomainName: !Sub "${S3Bucket}.s3.us-east-2.amazonaws.com"
-#            OriginPath: /static
-#            S3OriginConfig:
-#              # Restricting Bucket access through an origin access identity
-#              OriginAccessIdentity:
-#                Fn::Sub: 'origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}'
-#        # To connect the CDN to the origins you need to specify behaviours
-#        DefaultCacheBehavior:
-#          # Compress resources automatically ( gzip )
-#          Compress: 'true'
-#          AllowedMethods:
-#            - GET
-#            - HEAD
-#            - OPTIONS
-#          ForwardedValues:
-#            QueryString: false
-#          TargetOriginId: s3-website
-#          ViewerProtocolPolicy : redirect-to-https
-#          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
-#
-#  S3BucketPolicy:
-#    Type: AWS::S3::BucketPolicy
-#    Condition: DeployCloudFront
-#    Properties:
-#      Bucket: !Ref S3Bucket
-#      PolicyDocument:
-#        # Restricting access to cloudfront only.
-#        Statement:
-#          -
-#            Effect: Allow
-#            Action: 's3:GetObject'
-#            Resource:
-#              - !Sub "arn:aws:s3:::${S3Bucket}/*"
-#            Principal:
-#              AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
-#
-#
-#  #-----------------------------------------------------
-#  # Role/Permissions/Policy Configuration
-#  #-----------------------------------------------------
-#
-#  AccessRole:
-#    Type: AWS::IAM::Role
-#    Properties:
-#      ManagedPolicyArns:
-#        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaRole'
-#        - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
-#      AssumeRolePolicyDocument:
-#        Version: "2012-10-17"
-#        Statement:
-#          - Effect: Allow
-#            Principal:
-#              Service:
-#                - lambda.amazonaws.com
-#            Action:
-#              - 'sts:AssumeRole'
-#      Policies:
-#        - PolicyName: 'WriteToCloudWatch'
-#          PolicyDocument:
-#            Version: '2012-10-17'
-#            Statement:
-#              - Effect: Allow
-#                Action:
-#                  - logs:CreateLogGroup
-#                  - logs:CreateLogStream
-#                  - logs:PutLogEvents
-#                  - cloudwatch:PutMetricData
-#                Resource: '*'
-#
-#
-#        - PolicyName: 'AccessItinerariesTable'
-#          PolicyDocument:
-#            Version: '2012-10-17'
-#            Statement:
-#              - Effect: Allow
-#                Action: dynamodb:*
-#                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/itineraries"
-#
-#        - PolicyName: 'ActivitiesTable'
-#          PolicyDocument:
-#            Version: '2012-10-17'
-#            Statement:
-#              - Effect: Allow
-#                Action: dynamodb:*
-#                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/activities"
-#
-#
-#  #-----------------------------------------------------
-#  # Lambda Functions Configuration
-#  #-----------------------------------------------------
-#
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Fitnice Service
+
+Parameters:
+
+  CognitoDomain:
+    Type: String
+    Description: A name for the cognito Domain
+    Default: "fitnice-nealaites"
+
+  S3Bucket:
+    Type: String
+    Description: Parameter to specify the S3 Bucket to use for deployment
+
+  FrontendDeployment:
+    Default: remote
+    Type: String
+    AllowedValues:
+      - local
+      - remote
+    ConstraintDescription: Must specify 'local' or 'remote' for FrontendDeployment.
+
+Conditions:
+  DeployCloudFront: !Equals
+    - !Ref FrontendDeployment
+    - remote
+
+Globals:
+  Function:
+    Timeout: 20
+
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+      AllowHeaders: "'content-type,authorization'"
+      AllowOrigin: "'*'"
+    Auth:
+      DefaultAuthorizer: CognitoAuthorizer
+      AddDefaultAuthorizerToCorsPreflight: false
+      Authorizers:
+        CognitoAuthorizer:
+          UserPoolArn: !GetAtt UserPool.Arn
+
+Resources:
+
+  #-----------------------------------------------------
+  # Cognito Configuration for user management
+  #-----------------------------------------------------
+
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
+      UsernameAttributes:
+        - email
+      UsernameConfiguration:
+        CaseSensitive: false
+      AutoVerifiedAttributes:
+        - email
+      UserPoolName: !Sub ${CognitoDomain}-user-pool
+      Schema:
+        - Name: email
+          AttributeDataType: String
+          Mutable: false
+          Required: true
+        - Name: name
+          AttributeDataType: String
+          Mutable: true
+          Required: true
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      AllowedOAuthFlowsUserPoolClient: true
+      CallbackURLs:
+        - http://localhost:8000
+        - !If
+          - DeployCloudFront
+          - !Sub "https://${CloudfrontDistribution.DomainName}"
+          - !Ref "AWS::NoValue"
+      LogoutURLs:
+        - http://localhost:8000
+        - !If
+          - DeployCloudFront
+          - !Sub "https://${CloudfrontDistribution.DomainName}"
+          - !Ref "AWS::NoValue"
+      AllowedOAuthFlows:
+        - code
+        - implicit
+      AllowedOAuthScopes:
+        - phone
+        - email
+        - openid
+        - profile
+      SupportedIdentityProviders:
+        - COGNITO
+      PreventUserExistenceErrors: ENABLED
+
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: !Ref CognitoDomain
+      UserPoolId: !Ref UserPool
+
+
+  #-----------------------------------------------------
+  # CloudFront Configuration
+  #-----------------------------------------------------
+
+  CloudFrontOriginAccessIdentity:
+    Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
+    Condition: DeployCloudFront
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: 'Serverless frontend website'
+
+  CloudfrontDistribution:
+    Type: "AWS::CloudFront::Distribution"
+    Condition: DeployCloudFront
+    Properties:
+      DistributionConfig:
+        Comment: "Cloudfront distribution for serverless website"
+        DefaultRootObject: "index.html"
+        Enabled: true
+        HttpVersion: http2
+        PriceClass: PriceClass_100
+        # List of origins that Cloudfront will connect to
+        Origins:
+          - Id: s3-website
+            DomainName: !Sub "${S3Bucket}.s3.us-east-2.amazonaws.com"
+            OriginPath: /static
+            S3OriginConfig:
+              # Restricting Bucket access through an origin access identity
+              OriginAccessIdentity:
+                Fn::Sub: 'origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}'
+        # To connect the CDN to the origins you need to specify behaviours
+        DefaultCacheBehavior:
+          # Compress resources automatically ( gzip )
+          Compress: 'true'
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          ForwardedValues:
+            QueryString: false
+          TargetOriginId: s3-website
+          ViewerProtocolPolicy : redirect-to-https
+          CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Condition: DeployCloudFront
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        # Restricting access to cloudfront only.
+        Statement:
+          -
+            Effect: Allow
+            Action: 's3:GetObject'
+            Resource:
+              - !Sub "arn:aws:s3:::${S3Bucket}/*"
+            Principal:
+              AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
+
+
+  #-----------------------------------------------------
+  # Role/Permissions/Policy Configuration
+  #-----------------------------------------------------
+
+  AccessRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaRole'
+        - 'arn:aws:iam::aws:policy/AWSLambdaExecute'
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: 'WriteToCloudWatch'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - cloudwatch:PutMetricData
+                Resource: '*'
+
+
+        - PolicyName: 'AccessItinerariesTable'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: dynamodb:*
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/itineraries"
+
+        - PolicyName: 'ActivitiesTable'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: dynamodb:*
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/activities"
+
+
+  #-----------------------------------------------------
+  # Lambda Functions Configuration
+  #-----------------------------------------------------
+
 #  GetPlaylistLambda:
 #    Type: AWS::Serverless::Function
 #    Properties:
@@ -287,70 +287,51 @@
 #            Method: get
 #            Auth:
 #              Authorizer: 'NONE'
-#  SearchActivitiesLambda:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Role: !GetAtt AccessRole.Arn
-#      CodeUri: MusicPlaylistServiceLambda
-#      Handler: VacanzaLambda.src.main.java.musicplaylistservice.lambda.SearchActivitiesLambda::handleRequest
-#      Runtime: java11
-#      Architectures:
-#        - x86_64
-#      MemorySize: 512
-#      Environment:
-#        Variables:
-#          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
-#      Events:
-#        MusicPlaylistService:
-#          Type: Api
-#          Properties:
-#            Path: /activities/search
-#            Method: get
-#            Auth:
-#              Authorizer: 'NONE'
-#
-#  SearchItinerariesLambda:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Role: !GetAtt AccessRole.Arn
-#      CodeUri: MusicPlaylistServiceLambda
-#      Handler: VacanzaLambda.src.main.java.musicplaylistservice.lambda.SearchItinerariesLambda::handleRequest
-#      Runtime: java11
-#      Architectures:
-#        - x86_64
-#      MemorySize: 512
-#      Environment:
-#        Variables:
-#          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
-#      Events:
-#        MusicPlaylistService:
-#          Type: Api
-#          Properties:
-#            Path: /itineraries/search
-#            Method: get
-#            Auth:
-#              Authorizer: 'NONE'
-#
-#  CreateActivityLambda:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Role: !GetAtt AccessRole.Arn
-#      CodeUri: MusicPlaylistServiceLambda
-#      Handler: VacanzaLambda.src.main.java.musicplaylistservice.lambda.CreateActivityLambda::handleRequest
-#      Runtime: java11
-#      Architectures:
-#        - x86_64
-#      MemorySize: 512
-#      Environment:
-#        Variables:
-#          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
-#      Events:
-#        MusicPlaylistService:
-#          Type: Api
-#          Properties:
-#            Path: /activities
-#            Method: post
-#
+
+  SearchWorkoutsLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: app
+      Handler: com.nashss.se.fitnice.lambda.GetWorkoutLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        MusicPlaylistService:
+          Type: Api
+          Properties:
+            Path: /workouts/search
+            Method: get
+            Auth:
+              Authorizer: 'NONE'
+
+  SearchWorkoutRoutinesLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: app
+      Handler: com.nashss.se.fitnice.lambda.GetWorkoutRoutineLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        MusicPlaylistService:
+          Type: Api
+          Properties:
+            Path: /workoutRoutines/search
+            Method: get
+            Auth:
+              Authorizer: 'NONE'
+
 #  GetPlaylistSongsLambda:
 #    Type: AWS::Serverless::Function
 #    Properties:
@@ -372,47 +353,47 @@
 #            Method: get
 #            Auth:
 #              Authorizer: 'NONE'
-#
-#  CreatePlaylistLambda:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Role: !GetAtt AccessRole.Arn
-#      CodeUri: MusicPlaylistServiceLambda
-#      Handler: com.nashss.se.musicplaylistservice.lambda.CreatePlaylistLambda::handleRequest
-#      Runtime: java11
-#      Architectures:
-#        - x86_64
-#      MemorySize: 512
-#      Environment:
-#        Variables:
-#          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
-#      Events:
-#        MusicPlaylistService:
-#          Type: Api
-#          Properties:
-#            Path: /playlists
-#            Method: post
-#
-#  UpdatePlaylistLambda:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Role: !GetAtt AccessRole.Arn
-#      CodeUri: MusicPlaylistServiceLambda
-#      Handler: com.nashss.se.musicplaylistservice.lambda.UpdatePlaylistLambda::handleRequest
-#      Runtime: java11
-#      Architectures:
-#        - x86_64
-#      MemorySize: 512
-#      Environment:
-#        Variables:
-#          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
-#      Events:
-#        MusicPlaylistService:
-#          Type: Api
-#          Properties:
-#            Path: /playlists/{id}
-#            Method: put
-#
+
+  CreateWorkoutLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: app
+      Handler: com.nashss.se.fitnice.lambda.CreateWorkoutLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        MusicPlaylistService:
+          Type: Api
+          Properties:
+            Path: /workouts
+            Method: post
+
+  UpdateWorkoutRoutineLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: app
+      Handler: com.nashss.se.fitnice.lambda.UpdateWorkoutRoutineLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        MusicPlaylistService:
+          Type: Api
+          Properties:
+            Path: /workoutRoutines/{name}
+            Method: put
+
 #  AddActivityToItineraryLambda:
 #    Type: AWS::Serverless::Function
 #    Properties:
@@ -452,27 +433,27 @@
 #          Properties:
 #            Path: /itineraries/{email}/{tripName}/activities
 #            Method: put
-#
-#  CreateItineraryLambda:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Role: !GetAtt AccessRole.Arn
-#      CodeUri: MusicPlaylistServiceLambda
-#      Handler: VacanzaLambda.src.main.java.musicplaylistservice.lambda.CreateItineraryLambda::handleRequest
-#      Runtime: java11
-#      Architectures:
-#        - x86_64
-#      MemorySize: 512
-#      Environment:
-#        Variables:
-#          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
-#      Events:
-#        MusicPlaylistService:
-#          Type: Api
-#          Properties:
-#            Path: /itineraries
-#            Method: post
-#
+
+  CreateWorkoutRoutineLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: app
+      Handler: com.nashss.se.fitnice.lambda.CreateWorkoutRoutineLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        MusicPlaylistService:
+          Type: Api
+          Properties:
+            Path: /workoutRoutines
+            Method: post
+
 #  GetItineraryActivitiesLambda:
 #    Type: AWS::Serverless::Function
 #    Properties:
@@ -494,11 +475,11 @@
 #            Method: get
 #            Auth:
 #              Authorizer: 'NONE'
-#
-#  #-----------------------------------------------------
-#  # DynamoDB Configuration
-#  #-----------------------------------------------------
-#
+
+  #-----------------------------------------------------
+  # DynamoDB Configuration
+  #-----------------------------------------------------
+
 #  PlaylistsTable:
 #    Type: AWS::DynamoDB::Table
 #    Properties:
@@ -526,67 +507,63 @@
 #          KeyType: "RANGE"
 #      BillingMode: "PAY_PER_REQUEST"
 #      TableName: "album_tracks"
-#
-#  ItinerariesTable:
-#    Type: AWS::DynamoDB::Table
-#    Properties:
-#      AttributeDefinitions:
-#        - AttributeName: "email"
-#          AttributeType: "S"
-#        - AttributeName: "tripName"
-#          AttributeType: "S"
-#      KeySchema:
-#        - AttributeName: "email"
-#          KeyType: "HASH"
-#        - AttributeName: "tripName"
-#          KeyType: "RANGE"
-#      BillingMode: "PAY_PER_REQUEST"
-#      TableName: "itineraries"
-#
-#  ActivitiesTable:
-#    Type: AWS::DynamoDB::Table
-#    Properties:
-#      AttributeDefinitions:
-#        - AttributeName: "cityCountry"
-#          AttributeType: "S"
+
+  WorkoutRoutinesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "routineName"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "routineName"
+          KeyType: "HASH"
+      BillingMode: "PAY_PER_REQUEST"
+      TableName: "workoutRoutines"
+
+  WorkoutsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "date"
+          AttributeType: "S"
 #        - AttributeName: "name"
 #          AttributeType: "S"
-#      KeySchema:
-#        - AttributeName: "cityCountry"
-#          KeyType: "HASH"
+      KeySchema:
+        - AttributeName: "date"
+          KeyType: "HASH"
 #        - AttributeName: "name"
 #          KeyType: "RANGE"
-#      BillingMode: "PAY_PER_REQUEST"
-#      TableName: "activities"
-#
-##-----------------------------------------------------
-## The outputs defined below will be printed
-##  to the screen after a successful deploy
-##-----------------------------------------------------
-#
-#Outputs:
-#
-#  CognitoUserPoolId:
-#    Value: !Ref UserPool
-#    Description: "The Cognito User Pool ID (COGNITO_USER_POOL_ID)."
-#  CognitoUserPoolClientId:
-#    Value: !Ref UserPoolClient
-#    Description: "The Cognito User Pool Client ID (COGNITO_USER_POOL_CLIENT_ID)."
-#  CognitoDomain:
-#    Value: !Sub "${CognitoDomain}.auth.us-east-2.amazoncognito.com"
-#    Description: "The Cognito Domain (COGNITO_DOMAIN)."
-#
-#  ApiBaseUrl:
-#    Description: "API Gateway endpoint base URL for Prod stage (API_BASE_URL)."
-#    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
-#
-#  CognitoRedirectSignin:
-#    Description: "The URL of the deployed front-end application (COGNITO_REDIRECT_SIGNIN)."
-#    Value: !Sub "https://${CloudfrontDistribution.DomainName}"
-#    Condition: DeployCloudFront
-#  CognitoRedirectSignout:
-#    Description: "The URL of the deployed front-end application (COGNITO_REDIRECT_SIGNOUT)."
-#    Value: !Sub "https://${CloudfrontDistribution.DomainName}"
-#    Condition: DeployCloudFront
-#
-#
+      BillingMode: "PAY_PER_REQUEST"
+      TableName: "workouts"
+
+#-----------------------------------------------------
+# The outputs defined below will be printed
+#  to the screen after a successful deploy
+#-----------------------------------------------------
+
+Outputs:
+
+  CognitoUserPoolId:
+    Value: !Ref UserPool
+    Description: "The Cognito User Pool ID (COGNITO_USER_POOL_ID)."
+  CognitoUserPoolClientId:
+    Value: !Ref UserPoolClient
+    Description: "The Cognito User Pool Client ID (COGNITO_USER_POOL_CLIENT_ID)."
+  CognitoDomain:
+    Value: !Sub "${CognitoDomain}.auth.us-east-2.amazoncognito.com"
+    Description: "The Cognito Domain (COGNITO_DOMAIN)."
+
+  ApiBaseUrl:
+    Description: "API Gateway endpoint base URL for Prod stage (API_BASE_URL)."
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+
+  CognitoRedirectSignin:
+    Description: "The URL of the deployed front-end application (COGNITO_REDIRECT_SIGNIN)."
+    Value: !Sub "https://${CloudfrontDistribution.DomainName}"
+    Condition: DeployCloudFront
+  CognitoRedirectSignout:
+    Description: "The URL of the deployed front-end application (COGNITO_REDIRECT_SIGNOUT)."
+    Value: !Sub "https://${CloudfrontDistribution.DomainName}"
+    Condition: DeployCloudFront
+
+

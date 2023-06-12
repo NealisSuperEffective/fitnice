@@ -2,7 +2,7 @@
 <html>
 
 <head>
-         <script type="text/javascript" src="assets/searchItineraries.js"></script>
+         <script type="text/javascript" src="assets/getWorkout.js"></script>
          <link rel="stylesheet" type="text/css" href="css/vacanza.css">
 </head>
 
@@ -18,14 +18,14 @@
                     <a href="index.html"> Home | </a>
                 </tr>
                 <tr>
-                    <a href="createItinerary.html"> Create Itinerary | </a>
+                    <a href="createWorkout.html"> Create Workout | </a>
                 </tr>
                 <tr>
-                    <a href="createActivity.html"> Create Activity | </a>
+                    <a href="createActivity.html"> Create WorkoutRoutine | </a>
                 </tr>
-                <tr> <a href="getItineraryActivities.html"> Itinerary Details | </a>
+                <tr> <a href="getWorkouts.html"> View Workouts | </a>
                 </tr>
-                <tr> <a href="addActivityToItinerary.html"> Itinerary Activities | </a>
+                <tr> <a href="getWorkoutRoutines.html"> View WorkoutRoutines | </a>
                 </tr>
                 <tr>
                     <a href="aboutUs.html"> About Us </a>
@@ -35,15 +35,16 @@
     </div>
 </nav>
         <div class="card">
-              <h2>Find Itinerary</h2>
-             <form class="card-content" id="search-itineraries-form">
+              <h2>Find Workouts</h2>
+             <form class="card-content" id="search-workouts-form">
                    <p class="form-field">
-                        <label>Enter User's Email</label>
-                         <input type="text" class="validated-field" id="email" placeholder="" autofocus>
-                </p><p class="form-field">
-               <label>Enter Trip Name</label>
-               <input type="text" class="validated-field" id="tripName" placeholder="" autofocus>
-              </p>
+                        <label>Enter Workouts Date</label>
+                         <input type="text" class="validated-field" id="date" placeholder="2023-06-07" autofocus>
+                </p>
+<!--                 <p class="form-field">-->
+<!--               <label>Enter Workout Name</label>-->
+<!--               <input type="text" class="validated-field" id="name" placeholder="" autofocus>-->
+<!--              </p>-->
              </form>
              <p class="button-group">
                     <a href="" class="button" id="search-button">Search </a>
@@ -59,7 +60,7 @@
 <footer>
     <div class= "footer">
         <div class= "center">
-            <h4> NSS SE Cohort 2 MidStone Project</h4>
+            <h4> NSS SE Cohort 2 Capstone Project</h4>
             <h6> GitHub Repository <a href= "https://www.github.com"> here</a> </h6>
         </div>
     </div>

@@ -307,8 +307,6 @@ Resources:
           Properties:
             Path: /workouts/search
             Method: get
-            Auth:
-              Authorizer: 'NONE'
 
   SearchWorkoutRoutinesLambda:
     Type: AWS::Serverless::Function
@@ -329,8 +327,6 @@ Resources:
           Properties:
             Path: /workoutRoutines/search
             Method: get
-            Auth:
-              Authorizer: 'NONE'
 
 #  GetPlaylistSongsLambda:
 #    Type: AWS::Serverless::Function
@@ -373,8 +369,6 @@ Resources:
           Properties:
             Path: /workouts
             Method: post
-            Auth:
-              Authorizer: 'NONE'
 
   UpdateWorkoutRoutineLambda:
     Type: AWS::Serverless::Function
@@ -395,8 +389,6 @@ Resources:
           Properties:
             Path: /workoutRoutines/{name}
             Method: put
-            Auth:
-              Authorizer: 'NONE'
 
 #  AddActivityToItineraryLambda:
 #    Type: AWS::Serverless::Function
@@ -457,8 +449,6 @@ Resources:
           Properties:
             Path: /workoutRoutines
             Method: post
-            Auth:
-              Authorizer: 'NONE'
 
 #  GetItineraryActivitiesLambda:
 #    Type: AWS::Serverless::Function

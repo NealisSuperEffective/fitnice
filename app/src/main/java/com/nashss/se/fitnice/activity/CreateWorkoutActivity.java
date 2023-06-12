@@ -51,30 +51,30 @@ public class CreateWorkoutActivity {
                     "] contains illegal characters");
         }
 
-        String workoutDate = null;
-        if (createWorkoutRequest.getDate() != null) {
-            workoutDate = createWorkoutRequest.getDate();
-        }
-        Set<String> workoutTags = null;
-        if (createWorkoutRequest.getTags() != null) {
-            workoutTags = createWorkoutRequest.getTags();
-        }
-        String workoutDescription = null;
-        if (createWorkoutRequest.getDescription() != null) {
-            workoutDescription = createWorkoutRequest.getDescription();
-        }
-        List<String> workoutExercises = null;
-        if (createWorkoutRequest.getExercises() != null) {
-            workoutExercises = new ArrayList<>(createWorkoutRequest.getExercises());
-        }
+//        String workoutDate = null;
+//        if (createWorkoutRequest.getDate() != null) {
+//            workoutDate = createWorkoutRequest.getDate();
+//        }
+//        Set<String> workoutTags = null;
+//        if (createWorkoutRequest.getTags() != null) {
+//            workoutTags = createWorkoutRequest.getTags();
+//        }
+//        String workoutDescription = null;
+//        if (createWorkoutRequest.getDescription() != null) {
+//            workoutDescription = createWorkoutRequest.getDescription();
+//        }
+//        List<String> workoutExercises = null;
+//        if (createWorkoutRequest.getExercises() != null) {
+//            workoutExercises = new ArrayList<>(createWorkoutRequest.getExercises());
+//        }
 
         Workout newWorkout = new Workout();
 
-        newWorkout.setDate(workoutDate);
+        newWorkout.setDate(createWorkoutRequest.getDate());
         newWorkout.setName(createWorkoutRequest.getName());
-        newWorkout.setTags(workoutTags);
-        newWorkout.setDescription(workoutDescription);
-        newWorkout.setExercises(workoutExercises);
+        newWorkout.setTags(createWorkoutRequest.getTags());
+        newWorkout.setDescription(createWorkoutRequest.getDescription());
+        newWorkout.setExercises(createWorkoutRequest.getExercises());
 
         workoutDao.saveWorkout(newWorkout);
 

@@ -20,7 +20,7 @@ public class Workout{
 
     private List<String> exercises;
 
-    @DynamoDBRangeKey(attributeName = "date")
+    @DynamoDBHashKey(attributeName = "date")
     public String getDate() {
         return date;
     }
@@ -29,7 +29,7 @@ public class Workout{
         this.date = date;
     }
 
-    @DynamoDBHashKey(attributeName = "name")
+    @DynamoDBAttribute(attributeName = "name")
     public String getName() {
         return name;
     }

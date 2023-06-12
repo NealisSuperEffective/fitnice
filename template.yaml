@@ -203,21 +203,21 @@ Resources:
                 Resource: '*'
 
 
-        - PolicyName: 'AccessItinerariesTable'
+        - PolicyName: 'AccessWorkoutRoutinesTable'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action: dynamodb:*
-                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/itineraries"
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/workoutRoutines"
 
-        - PolicyName: 'ActivitiesTable'
+        - PolicyName: 'WorkoutsTable'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action: dynamodb:*
-                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/activities"
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/workouts"
 
 
   #-----------------------------------------------------
@@ -302,13 +302,11 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        MusicPlaylistService:
+        fitnice:
           Type: Api
           Properties:
             Path: /workouts/search
             Method: get
-            Auth:
-              Authorizer: 'NONE'
 
   SearchWorkoutRoutinesLambda:
     Type: AWS::Serverless::Function
@@ -324,13 +322,11 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        MusicPlaylistService:
+        fitnice:
           Type: Api
           Properties:
             Path: /workoutRoutines/search
             Method: get
-            Auth:
-              Authorizer: 'NONE'
 
 #  GetPlaylistSongsLambda:
 #    Type: AWS::Serverless::Function
@@ -368,7 +364,7 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        MusicPlaylistService:
+        fitnice:
           Type: Api
           Properties:
             Path: /workouts
@@ -388,7 +384,7 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        MusicPlaylistService:
+        fitnice:
           Type: Api
           Properties:
             Path: /workoutRoutines/{name}
@@ -448,7 +444,7 @@ Resources:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
       Events:
-        MusicPlaylistService:
+        fitnice:
           Type: Api
           Properties:
             Path: /workoutRoutines

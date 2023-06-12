@@ -1,7 +1,6 @@
 package com.nashss.se.fitnice.activity.results;
 
 import com.nashss.se.fitnice.models.WorkoutModel;
-import com.nashss.se.fitnice.models.WorkoutRoutineModel;
 
 public class CreateWorkoutResult {
     private final WorkoutModel workoutModel;
@@ -22,14 +21,14 @@ public class CreateWorkoutResult {
     }
 
     //CHECKSTYLE:OFF:Builder
-    public static CreateWorkoutResult.Builder builder() {
-        return new CreateWorkoutResult.Builder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static class Builder {
         private WorkoutModel workoutModel;
 
-        public CreateWorkoutResult.Builder withWorkoutModel(WorkoutModel workoutModel) {
+        public Builder withWorkoutModel(WorkoutModel workoutModel) {
             this.workoutModel = workoutModel;
             return this;
         }

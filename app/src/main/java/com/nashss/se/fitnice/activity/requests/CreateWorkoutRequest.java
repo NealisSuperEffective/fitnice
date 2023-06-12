@@ -1,5 +1,6 @@
 package com.nashss.se.fitnice.activity.requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 import static com.nashss.se.fitnice.utils.CollectionUtils.copyToList;
 
+@JsonDeserialize(builder = CreateWorkoutRequest.Builder.class)
 public class CreateWorkoutRequest {
     private String date;
     private String name;
@@ -36,8 +38,8 @@ public class CreateWorkoutRequest {
     @Override
     public String toString() {
         return "CreateWorkoutRequest{" +
-                "Workout name='" + name + '\'' +
-                ", date=" + date + '\'' +
+                "date='" + date + '\'' +
+                ", name=" + name + '\'' +
                 ", tags=" + tags + '\'' +
                 ", description=" + description + '\'' +
                 ", exercises=" + exercises +
@@ -45,8 +47,8 @@ public class CreateWorkoutRequest {
     }
 
     //CHECKSTYLE:OFF:Builder
-    public static CreateWorkoutRequest.Builder builder() {
-        return new CreateWorkoutRequest.Builder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     @JsonPOJOBuilder
@@ -57,26 +59,26 @@ public class CreateWorkoutRequest {
         private String description;
         private List<String> exercises;
 
-        public CreateWorkoutRequest.Builder withDate(String date) {
+        public Builder withDate(String date) {
             this.date = date;
             return this;
         }
 
-        public CreateWorkoutRequest.Builder withName(String name) {
+        public Builder withName(String name) {
             this.name = name;
             return this;
         }
 
-        public CreateWorkoutRequest.Builder withDescription(String description) {
+        public Builder withDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public CreateWorkoutRequest.Builder withTags(Set<String> tags) {
+        public Builder withTags(Set<String> tags) {
             this.tags = tags;
             return this;
         }
-        public CreateWorkoutRequest.Builder withExercises(List<String> exercises) {
+        public Builder withExercises(List<String> exercises) {
             this.exercises = copyToList(exercises);
             return this;
         }

@@ -2,7 +2,6 @@ package com.nashss.se.fitnice.dynamodb.models;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -17,7 +16,7 @@ public class  WorkoutRoutine {
     private String description;
     private List<String> exercises;
 
-    @DynamoDBRangeKey(attributeName = "routineName")
+    @DynamoDBHashKey(attributeName = "routineName")
     public String getRoutineName() {
         return routineName;
     }

@@ -10,7 +10,7 @@ export default class Header extends BindingClass {
 
         const methodsToBind = [
             'addHeaderToPage', 'createSiteTitle', 'createUserInfoForHeader',
-            'createLoginButton', 'createLoginButton', 'createLogoutButton','createItinerarySiteTitle'
+            'createLoginButton', 'createLoginButton', 'createLogoutButton','createWorkoutSiteTitle'
         ];
 
         this.bindClassMethods(methodsToBind, this);
@@ -37,7 +37,7 @@ export default class Header extends BindingClass {
         const homeButton = document.createElement('a');
         homeButton.classList.add('header_home');
         homeButton.href = 'index.html';
-        homeButton.innerText = 'Vacanza';
+        homeButton.innerText = 'Fitnice';
 
         const siteTitle = document.createElement('div');
         siteTitle.classList.add('site-title');
@@ -45,11 +45,11 @@ export default class Header extends BindingClass {
 
         return siteTitle;
     }
-    createItinerarySiteTitle() {
+    createWorkoutSiteTitle() {
             const homeButton = document.createElement('a');
             homeButton.classList.add('header_home');
-            homeButton.href = 'createItinerary.html';
-            homeButton.innerText = 'Vacanza';
+            homeButton.href = 'createWorkout.html';
+            homeButton.innerText = 'Fitnice';
 
             const siteTitle = document.createElement('div');
             siteTitle.classList.add('site-title');

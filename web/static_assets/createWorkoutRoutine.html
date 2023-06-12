@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="assets/createWorkoutRoutine.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/vacanza.css"></head>
+
+<body class="background">
+<header class="header" id="header"></header>
+<nav>
+    <div class="navbar">
+        <div class="center">
+            <ul>
+                <tr>
+                    <a href="index.html"> Home | </a>
+                </tr>
+                <tr>
+                    <a href="createWorkout.html"> Create Workout | </a>
+                </tr>
+                <tr>
+                    <a href="createActivity.html"> Create WorkoutRoutine | </a>
+                </tr>
+                <tr> <a href="getWorkouts.html"> View Workouts | </a>
+                </tr>
+                <tr> <a href="getWorkoutRoutines.html"> View WorkoutRoutines | </a>
+                </tr>
+                <tr>
+                    <a href="aboutUs.html"> About Us </a>
+                </tr>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="card">
+    <h2>Create WorkoutRoutine</h2>
+    <form class="card-content" id="create-playlist-form">
+        <p class="hidden error" id="error-message"> </p>
+        <p class="form-field">
+            <label>WorkoutRoutine Name</label>
+            <input type="text" required class="validated-field" id="name" placeholder="Chest/Legs Routine"
+                   autofocus>
+        </p>
+
+        <p class="form-field">
+            <label>Tags</label>
+            <input type="text" id="tags" class="tags" placeholder="chest, legs, core"
+                   data-tip="Must be a comma separated list of tags">
+        </p>
+        <p class="form-field">
+            <label>Description</label>
+            <input type="text" id="description" class="description" placeholder="Four chest exercises targeting the upper and lower chest, and front delts. Leg exercises focusing the quads and hip flexors."
+                   data-tip="May be formatted in any preferred manner.">
+        </p>
+        <p class="form-field">
+            <label>Exercises</label>
+            <input type="text" id="exercises" class="exercises" placeholder="Bench, Leg Press"
+                   data-tip="Must be a comma separated list">
+        </p>
+        <p>
+            <a href="#" class="button" id="create-workout">Create WorkoutRoutine</a>
+        </p>
+    </form>
+</div>
+</body>
+<footer>
+    <div class= "footer">
+        <div class= "center">
+            <h4> NSS SE Cohort 2 Capstone Project</h4>
+            <h6> GitHub Repository <a href= "https://www.github.com"> here</a> </h6>
+        </div>
+    </div>
+</footer>
+
+
+</html>

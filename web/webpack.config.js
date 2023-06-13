@@ -23,12 +23,11 @@ module.exports = {
     usedExports: true
   },
   entry: {
-    addActivityToItinerary: path.resolve(__dirname, 'src', 'pages', 'addActivityToItinerary.js'),
-    createActivity: path.resolve(__dirname, 'src', 'pages', 'createActivity.js'),
-    createItinerary: path.resolve(__dirname, 'src','pages', 'createItinerary.js'),
-    getItineraryActivities: path.resolve(__dirname, 'src','pages', 'getItineraryActivities.js'),
-    searchItineraries: path.resolve(__dirname, 'src', 'pages', 'searchItineraries.js'),
-    viewItinerary: path.resolve(__dirname, 'src', 'pages', 'viewItinerary.js'),
+    createWorkout: path.resolve(__dirname, 'src', 'pages', 'createWorkout.js'),
+    createWorkoutRoutine: path.resolve(__dirname, 'src', 'pages', 'createWorkoutRoutine.js'),
+    getWorkout: path.resolve(__dirname, 'src','pages', 'getWorkout.js'),
+    getWorkoutRoutine: path.resolve(__dirname, 'src','pages', 'getWorkoutRoutine.js'),
+//    updateWorkoutRoutine: path.resolve(__dirname, 'src', 'pages', 'updateWorkoutRoutine.js'),
   },
   output: {
     path: path.resolve(__dirname, 'build', 'assets'),

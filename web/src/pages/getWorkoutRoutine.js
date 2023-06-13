@@ -43,7 +43,7 @@ class GetWorkoutRoutine extends BindingClass {
     mount() {
         // Wire up the form's 'submit' event and the button's 'click' event to the search method.
         document.getElementById('search-workoutRoutines-form').addEventListener('submit', this.search);
-        document.getElementById('search-btn').addEventListener('click', this.search);
+        document.getElementById('search-button').addEventListener('click', this.search);
 
         this.header.addHeaderToPage();
 
@@ -112,7 +112,7 @@ class GetWorkoutRoutine extends BindingClass {
             return '<h4>No results found</h4>';
         }
 
-        let html = '<table><tr><th>RoutineName</th><th>;
+//        let html = '<table><tr><th>RoutineName</th></tr>;
         for (const res of searchResults) {
             html += `
             <tr>

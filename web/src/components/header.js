@@ -10,7 +10,7 @@ export default class Header extends BindingClass {
 
         const methodsToBind = [
             'addHeaderToPage', 'createSiteTitle', 'createUserInfoForHeader',
-            'createLoginButton', 'createLoginButton', 'createLogoutButton','createWorkoutSiteTitle'
+            'createLoginButton', 'createLogoutButton','createWorkoutSiteTitle'
         ];
 
         this.bindClassMethods(methodsToBind, this);
@@ -25,7 +25,7 @@ export default class Header extends BindingClass {
     async addHeaderToPage() {
         const currentUser = await this.client.getIdentity();
 
-        const siteTitle = this.createSiteTitle();
+        const siteTitle = this.createWorkoutSiteTitle();
         const userInfo = this.createUserInfoForHeader(currentUser);
 
         const header = document.getElementById('header');

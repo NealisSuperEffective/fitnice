@@ -59,7 +59,9 @@ public class WorkoutRoutineDao {
      * @return The WorkoutRoutine object that was saved
      */
     public WorkoutRoutine saveWorkoutRoutine(WorkoutRoutine workoutRoutine) {
+        System.out.println("start of saveWorkoutRoutine");
         this.dynamoDbMapper.save(workoutRoutine);
+        System.out.println("end of saveWorkoutRoutine");
         return workoutRoutine;
     }
     /**

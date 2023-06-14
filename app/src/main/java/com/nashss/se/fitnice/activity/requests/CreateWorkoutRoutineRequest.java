@@ -36,7 +36,7 @@ public class CreateWorkoutRoutineRequest {
     @Override
     public String toString() {
         return "CreateWorkoutRoutineRequest{" +
-                "WorkoutRoutine name='" + routineName + '\'' +
+                "name='" + routineName + '\'' +
                 ", tags=" + tags + '\'' +
                 ", description=" + description + '\'' +
                 ", exercises=" + exercises +

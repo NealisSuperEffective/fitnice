@@ -288,7 +288,7 @@ Resources:
 #            Auth:
 #              Authorizer: 'NONE'
 
-  SearchWorkoutsLambda:
+  GetWorkoutsLambda:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt AccessRole.Arn
@@ -305,10 +305,12 @@ Resources:
         fitnice:
           Type: Api
           Properties:
-            Path: /workouts/search
+            Path: /workouts/{date}
             Method: get
+            Auth:
+              Authorizer: 'NONE'
 
-  SearchWorkoutRoutinesLambda:
+  GetWorkoutRoutinesLambda:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt AccessRole.Arn
@@ -325,8 +327,10 @@ Resources:
         fitnice:
           Type: Api
           Properties:
-            Path: /workoutRoutines/search
+            Path: /workoutRoutines/{name}
             Method: get
+            Auth:
+              Authorizer: 'NONE'
 
 #  GetPlaylistSongsLambda:
 #    Type: AWS::Serverless::Function

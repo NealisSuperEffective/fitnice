@@ -7,14 +7,20 @@ import com.nashss.se.fitnice.activity.results.UpdateWorkoutRoutineResult;
 
 public class UpdateWorkoutRoutineLambda
         extends LambdaActivityRunner<UpdateWorkoutRoutineRequest, UpdateWorkoutRoutineResult>
-        implements RequestHandler<LambdaRequest<UpdateWorkoutRoutineRequest>, LambdaResponse> {
+        implements RequestHandler<AuthenticatedLambdaRequest<UpdateWorkoutRoutineRequest>, LambdaResponse> {
     @Override
-    public LambdaResponse handleRequest(LambdaRequest<UpdateWorkoutRoutineRequest> input, Context context) {
+    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<UpdateWorkoutRoutineRequest> input, Context context) {
         return super.runActivity(
-                () -> input.fromPath(path ->
-                        UpdateWorkoutRoutineRequest.builder()
-                                .withRoutineName(path.get("routineName"))
-                                .build()),
+                () -> {
+                    UpdateWorkoutRoutineRequest unauthenticatedRequest = input.fromBody(UpdateWorkoutRoutineRequest.class);
+                    return input.fromUserClaims(claims ->
+                            UpdateWorkoutRoutineRequest.builder()
+                                    .withRoutineName(unauthenticatedRequest.getRoutineName())
+                                    .withTags(unauthenticatedRequest.getTags())
+                                    .withDescription(unauthenticatedRequest.getDescription())
+                                    .withExercises(unauthenticatedRequest.getExercises())
+                                    .build());
+                },
                 (request, serviceComponent) ->
                         serviceComponent.provideUpdateWorkoutRoutineActivity().handleRequest(request)
         );

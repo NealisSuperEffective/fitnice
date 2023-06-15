@@ -36,7 +36,8 @@ public class GetWorkoutActivity {
     public GetWorkoutResult handleRequest(final GetWorkoutRequest getWorkoutRequest) {
         log.info("Received GetWorkoutRequest {}", getWorkoutRequest);
         String date = getWorkoutRequest.getDate();
-        Workout workout = workoutDao.getWorkout(date);
+        String name = getWorkoutRequest.getName();
+        Workout workout = workoutDao.getWorkout(date, name);
         WorkoutModel workoutModel = new VModelConverter().toWorkoutModel(workout);
 
         return GetWorkoutResult.builder()

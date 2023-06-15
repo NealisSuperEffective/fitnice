@@ -305,7 +305,7 @@ Resources:
         fitnice:
           Type: Api
           Properties:
-            Path: /workouts/{date}
+            Path: /workouts/{date}/{name}
             Method: get
             Auth:
               Authorizer: 'NONE'
@@ -327,7 +327,7 @@ Resources:
         fitnice:
           Type: Api
           Properties:
-            Path: /workoutRoutines/{name}
+            Path: /workoutRoutines/{routineName}
             Method: get
             Auth:
               Authorizer: 'NONE'
@@ -391,7 +391,7 @@ Resources:
         fitnice:
           Type: Api
           Properties:
-            Path: /workoutRoutines/{name}
+            Path: /workoutRoutines/{routineName}
             Method: put
 
 #  AddActivityToItineraryLambda:
@@ -526,13 +526,13 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "date"
           AttributeType: "S"
-#        - AttributeName: "name"
-#          AttributeType: "S"
+        - AttributeName: "name"
+          AttributeType: "S"
       KeySchema:
         - AttributeName: "date"
           KeyType: "HASH"
-#        - AttributeName: "name"
-#          KeyType: "RANGE"
+        - AttributeName: "name"
+          KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "workouts"
 

@@ -54,6 +54,8 @@ public interface ServiceComponent {
      */
     UpdateWorkoutRoutineActivity provideUpdateWorkoutRoutineActivity();
 
+    DeleteWorkoutRoutineActivity provideDeleteWorkoutRoutineActivity();
+
 //    /**
 //     * Provides the relevant activity.
 //     *

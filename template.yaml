@@ -305,7 +305,7 @@ Resources:
         fitnice:
           Type: Api
           Properties:
-            Path: /workouts/{date}/{name}
+            Path: /workouts/{date}/{workoutName}
             Method: get
             Auth:
               Authorizer: 'NONE'
@@ -351,8 +351,6 @@ Resources:
           Properties:
             Path: /workoutRoutines/{routineName}
             Method: delete
-            Auth:
-              Authorizer: 'NONE'
 
   CreateWorkoutLambda:
     Type: AWS::Serverless::Function
@@ -526,12 +524,12 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "date"
           AttributeType: "S"
-        - AttributeName: "name"
+        - AttributeName: "workoutName"
           AttributeType: "S"
       KeySchema:
         - AttributeName: "date"
           KeyType: "HASH"
-        - AttributeName: "name"
+        - AttributeName: "workoutName"
           KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "workouts"

@@ -39,7 +39,7 @@ class CreateWorkoutRoutine extends BindingClass {
             const origButtonText = createButton.innerText;
             createButton.innerText = 'Loading...';
 
-            const routineName = document.getElementById('name').value;
+            const routineName = document.getElementById('routineName').value;
             const tagsText = document.getElementById('tags').value;
             const descriptionText = document.getElementById('description').value;
             const exercisesText = document.getElementById('exercises').value;

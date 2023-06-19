@@ -14,14 +14,14 @@ public class DeleteWorkoutRoutineLambda
         @Override
         public LambdaResponse handleRequest (AuthenticatedLambdaRequest < DeleteWorkoutRoutineRequest > input, Context context)
         {
-            DeleteWorkoutRoutineRequest unauthenticatedRequest = input.fromBody(DeleteWorkoutRoutineRequest.class);
             return super.runActivity(
                     () -> {
-                        return
+                            DeleteWorkoutRoutineRequest unauthenticatedRequest = input.fromBody(DeleteWorkoutRoutineRequest.class);
+                            return input.fromUserClaims(claims ->
                                 DeleteWorkoutRoutineRequest.builder()
                                 .withRoutineName(unauthenticatedRequest.getRoutineName())
-                                .build();
-                    },
+                                .build());
+        },
                     (request, serviceComponent) ->
                             serviceComponent.provideDeleteWorkoutRoutineActivity().handleRequest(request)
             );

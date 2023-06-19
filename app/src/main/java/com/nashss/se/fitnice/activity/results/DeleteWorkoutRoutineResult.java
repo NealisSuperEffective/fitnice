@@ -19,13 +19,13 @@ public class DeleteWorkoutRoutineResult {
     }
 
     //CHECKSTYLE:OFF:Builder
-    public static DeleteWorkoutRoutineResult.Builder builder() {
-        return new DeleteWorkoutRoutineResult.Builder();
+    public static Builder builder() {
+        return new Builder();
     }
     public static class Builder {
         private WorkoutRoutineModel workoutRoutine;
 
-        public DeleteWorkoutRoutineResult.Builder withWorkoutRoutine(WorkoutRoutineModel workoutRoutine) {
+        public Builder withWorkoutRoutine(WorkoutRoutineModel workoutRoutine) {
             this.workoutRoutine = workoutRoutine;
             return this;
         }

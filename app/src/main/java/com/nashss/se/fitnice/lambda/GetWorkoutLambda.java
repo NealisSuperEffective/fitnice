@@ -20,7 +20,7 @@ public class GetWorkoutLambda
                 () -> input.fromPath(path ->
                         GetWorkoutRequest.builder()
                                 .withWorkoutDate(path.get("date"))
-                                .withWorkoutDate(path.get("name"))
+                                .withWorkoutDate(path.get("workoutName"))
                                 .build()),
                 (request, serviceComponent) ->
                         serviceComponent.provideGetWorkoutActivity().handleRequest(request)

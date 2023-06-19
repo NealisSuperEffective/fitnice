@@ -20,12 +20,15 @@ public class DeleteWorkoutRoutineActivity {
 
     public DeleteWorkoutRoutineResult handleRequest(final DeleteWorkoutRoutineRequest request) {
         log.info("Received DeleteWorkoutRoutineRequest {}", request);
-
+        System.out.println("reached Activity");
         String requestRoutineName = request.getRoutineName();
 
-        WorkoutRoutine workoutRoutine = workoutRoutineDao.getWorkoutRoutine(requestRoutineName);
+        WorkoutRoutine workoutRoutine = new WorkoutRoutine();
+        WorkoutRoutine workoutRoutine1 = workoutRoutineDao.getWorkoutRoutine(requestRoutineName);
+        workoutRoutine.setRoutineName(requestRoutineName);
         workoutRoutineDao.deleteWorkoutRoutine(workoutRoutine);
-        WorkoutRoutineModel workoutRoutineModel = new VModelConverter().toWorkoutRoutineModel(workoutRoutine);
+        System.out.println("reached past DEL function");
+        WorkoutRoutineModel workoutRoutineModel = new VModelConverter().toWorkoutRoutineModel(workoutRoutine1);
 
         return DeleteWorkoutRoutineResult.builder()
                 .withWorkoutRoutine(workoutRoutineModel)

@@ -29,7 +29,7 @@ public class Workout{
         this.date = date;
     }
 
-    @DynamoDBRangeKey(attributeName = "name")
+    @DynamoDBRangeKey(attributeName = "workoutName")
     public String getName() {
         return name;
     }

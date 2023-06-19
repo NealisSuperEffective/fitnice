@@ -1,7 +1,9 @@
 package com.nashss.se.fitnice.activity.requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+@JsonDeserialize(builder = DeleteWorkoutRoutineRequest.Builder.class)
 public class DeleteWorkoutRoutineRequest {
     private final String routineName;
 

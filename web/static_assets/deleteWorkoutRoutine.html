@@ -2,14 +2,12 @@
 <html>
 
 <head>
-         <script type="text/javascript" src="assets/getWorkout.js"></script>
-         <link rel="stylesheet" type="text/css" href="css/vacanza.css">
+    <script type="text/javascript" src="assets/getWorkoutRoutine.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/vacanza.css">
 </head>
 
 <body class="background">
-
-
-<header class="header" id="header"> <img src="images/header.jpg" width=99% length=99% align=left/></header>
+<header class="header" id="header"></header>
 <nav>
     <div class="navbar">
         <div class="center">
@@ -37,28 +35,21 @@
         </div>
     </div>
 </nav>
-        <div class="card">
-              <h2>Find Workouts</h2>
-             <form class="card-content" id="search-workouts-form">
-                   <p class="form-field">
-                        <label>Enter Workouts Date</label>
-                         <input type="text" class="validated-field" id="date" placeholder="2023-06-07" autofocus>
-                </p>
-<!--                 <p class="form-field">-->
-<!--               <label>Enter Workout Name</label>-->
-<!--               <input type="text" class="validated-field" id="name" placeholder="" autofocus>-->
-<!--              </p>-->
-             </form>
-             <p class="button-group">
-                    <a href="" class="button" id="search-button">Search </a>
-            </p>
+<div class="card">
+    <h3>DeleteWorkoutRoutine: </h3>
+    <form class="card-content" id="create-playlist-form">
+        <p class="hidden error" id="error message"></p>
+        <p class="form field">
+            <label>WorkoutRoutine Name</label>
+            <input type="text" required class="validated-field" id="routineName" placeholder="Chest/Legs"
+                   autofocus>
         </p>
-    </div>
-    <div class="card hidden" id='search-results-container'>
-        <h3>Results for <span id="search-criteria-display"></span></h3>
-        <div id="search-results-display">
-        </div>
-    </div>
+        <p>
+            <a href="#" class="button" id="delete-workoutRoutine">Delete WorkoutRoutine</a>
+        </p>
+    </form>
+</div>
+
 </body>
 <footer>
     <div class= "footer">

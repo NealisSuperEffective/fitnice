@@ -37,8 +37,8 @@ public class WorkoutDao {
      * @param date The date to look up
      * @return The corresponding Workout if found
      */
-    public Workout getWorkout(String date) {
-        Workout workout = dynamoDbMapper.load(Workout.class, date);
+    public Workout getWorkout(String date, String name) {
+        Workout workout = dynamoDbMapper.load(Workout.class, date, name);
         if (null == workout) {
             metricsPublisher.addCount(MetricsConstants.GETWORKOUT_WORKOUTNOTFOUND_COUNT, 1);
             throw new WorkoutNotFoundException(

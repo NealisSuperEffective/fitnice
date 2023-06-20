@@ -25,14 +25,6 @@ public class  WorkoutRoutine {
         this.routineName= routineName;
     }
 
-//    @DynamoDBAttribute(attributeName = "tags")
-//    public Set<String> getTags() {
-//        return tags;
-//    }
-//
-//    public void setTags(Set<String> tags) {
-//        this.tags= tags;
-//    }
 
     @DynamoDBAttribute(attributeName = "description")
     public String getDescription() {

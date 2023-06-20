@@ -16,8 +16,7 @@ export default class MusicPlaylistClient extends BindingClass {
         super();
 
         const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getTokenOrThrow',
-        'getItinerary', 'getItineraryActivities', 'createItinerary',
-        'search', 'createActivity', 'addActivityToItinerary','removeActivityFromItinerary','searchActivities'];
+        'getWorkout', 'getWorkoutRoutine', 'createWorkout', 'createWorkoutRoutine'];
 
         this.bindClassMethods(methodsToBind, this);
         this.authenticator = new Authenticator();
@@ -78,11 +77,11 @@ export default class MusicPlaylistClient extends BindingClass {
      * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The playlist's metadata.
      */
-    async getItinerary(email, tripName, errorCallback) {
+    async getWorkout(date, errorCallback) {
 
           try {
-              const response = await this.axiosClient.get(`itineraries/${email}/${tripName}`);
-              return response.data.itinerary;
+              const response = await this.axiosClient.get(`workouts/${date}`);
+              return response.data.workout;
           } catch (error) {
               this.handleError(error, errorCallback)
           }
@@ -94,12 +93,12 @@ export default class MusicPlaylistClient extends BindingClass {
      * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The list of activities in an itinerary.
      */
-    async getItineraryActivities(email, tripName, errorCallback) {
+    async getWorkoutRoutine(name, errorCallback) {
 
         try {
            // const response = await this.axiosClient.get(`itineraries/${id}/activities`);
-           const response = await this.axiosClient.get(`itineraries/${email}/${tripName}/activities`);
-            return response.data.activities;
+           const response = await this.axiosClient.get(`workoutRoutines/${name}`);
+            return response.data.workoutRoutines;
         } catch (error) {
             this.handleError(error, errorCallback)
         }
@@ -114,44 +113,43 @@ export default class MusicPlaylistClient extends BindingClass {
          * @param errorCallback (Optional) A function to execute if the call fails.
          * @returns The itinerary that has been created.
          */
-    async createItinerary(tripName, tags, users, cities, errorCallback) {
+    async createWorkout(date, name, tags, description, exercises, errorCallback) {
 
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can create itineraries.");
-            const response = await this.axiosClient.post(`itineraries`, {
-                tripName: tripName,
+            const response = await this.axiosClient.post(`workouts`, {
+                date: date,
+                name: name,
                 tags: tags,
-                users: users,
-                cities: cities,
+                description: description,
+                exercises: exercises,
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            return response.data.itinerary;
+            return response.data.workout;
         } catch (error) {
             this.handleError(error, errorCallback)
         }
     }
 
-        async createActivity(cityCountry, name, address, type, kidFriendly, weatherPermitting, errorCallback) {
+        async createWorkoutRoutine(name, tags, description, exercises, errorCallback) {
 
             try {
                 const token = await this.getTokenOrThrow("Only authenticated users can create activities.");
 
-                const response = await this.axiosClient.post(`activities`, {
-                    cityCountry: cityCountry,
+                const response = await this.axiosClient.post(`workoutRoutines`, {
                     name: name,
-                    address: address,
-                    type: type,
-                    kidFriendly: kidFriendly,
-                    weatherPermitting: weatherPermitting,
+                    tags: tags,
+                    description: description,
+                    exercises: exercises,
                 }, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                return response.data.activity;
+                return response.data.workoutRoutine;
             } catch (error) {
                 this.handleError(error, errorCallback)
             }
@@ -164,95 +162,95 @@ export default class MusicPlaylistClient extends BindingClass {
      * @param trackNumber The track number of the song on the album.
      * @returns The list of songs on a playlist.
      */
-    async addSongToPlaylist(id, asin, trackNumber, errorCallback) {
-        try {
-            const token = await this.getTokenOrThrow("Only authenticated users can add a song to a playlist.");
-            const response = await this.axiosClient.post(`playlists/${id}/songs`, {
-                id: id,
-                asin: asin,
-                trackNumber: trackNumber
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            return response.data.songList;
-        } catch (error) {
-            this.handleError(error, errorCallback)
-        }
-    }
-        /**
-         * Adds requested activity to requested itinerary's list of activities.
-         * @param email A string containing partition key for itinerary to pass to the API.
-         * @param tripName A string containing sort key for itinerary to pass to the API.
-         * @param cityCountry A string containing partition key for activity to pass to the API.
-         * @param name A string containing sort key for activity to pass to the API.
-         * @param errorCallback (Optional) A function to execute if the call fails.
-         * @returns The list of activities that have been updated in the itinerary.
-         */
-    async addActivityToItinerary(email, tripName, cityCountry, name, errorCallback) {
-            try {
-                const token = await this.getTokenOrThrow("Only authenticated users can add a song to a playlist.");
-                const response = await this.axiosClient.post(`itineraries/${email}/${tripName}/activities`, {
-                    email: email,
-                    tripName: tripName,
-                    cityCountry: cityCountry,
-                    name: name
-              }, {
-                  headers: {
-                      Authorization: `Bearer ${token}`
-                  }
-              });
-                return response.data.activityList;
-            } catch (error) {
-                this.handleError(error, errorCallback)
-            }
-        }
-    async removeActivityFromItinerary(email, tripName, cityCountry, name, errorCallback) {
-            try {
-                const token = await this.getTokenOrThrow("Only authenticated users can add a song to a playlist.");
-                const response = await this.axiosClient.put(`itineraries/${email}/${tripName}/activities`, {
-                    email: email,
-                    tripName: tripName,
-                    cityCountry: cityCountry,
-                    name: name
-              }, {
-                  headers: {
-                      Authorization: `Bearer ${token}`
-                  }
-              });
-                return response.data.activityList;
-            } catch (error) {
-                this.handleError(error, errorCallback)
-            }
-        }
-
-    /**
-     * Search for itineraries that match the search criteria.
-     * @param criteria A string containing search criteria to pass to the API.
-     * @returns The itineraries that match the search criteria.
-     */
-    async search(criteria, errorCallback) {
-        try {
-            const queryParams = new URLSearchParams({ q: criteria })
-            const queryString = queryParams.toString();
-console.log(queryString);
-            const response = await this.axiosClient.get(`itineraries/search?${queryString}`);
-
-            return response.data.itineraries;
-        } catch (error) {
-            this.handleError(error, errorCallback)
-        }
-
-    }
-    async searchActivities(cityCountry, errorCallback) {
-        try{
-            const response = await this.axiosClient.get(`activities/search?cityCountry=${cityCountry}`);
-            return response.data.activityModelsList;
-        } catch (error) {
-            this.handleError(error, errorCallback);
-        }
-    }
+//    async updateWorkoutRoutine(, errorCallback) {
+//        try {
+//            const token = await this.getTokenOrThrow("Only authenticated users can add a song to a playlist.");
+//            const response = await this.axiosClient.post(`playlists/${id}/songs`, {
+//                id: id,
+//                asin: asin,
+//                trackNumber: trackNumber
+//            }, {
+//                headers: {
+//                    Authorization: `Bearer ${token}`
+//                }
+//            });
+//            return response.data.songList;
+//        } catch (error) {
+//            this.handleError(error, errorCallback)
+//        }
+//    }
+//        /**
+//         * Adds requested activity to requested itinerary's list of activities.
+//         * @param email A string containing partition key for itinerary to pass to the API.
+//         * @param tripName A string containing sort key for itinerary to pass to the API.
+//         * @param cityCountry A string containing partition key for activity to pass to the API.
+//         * @param name A string containing sort key for activity to pass to the API.
+//         * @param errorCallback (Optional) A function to execute if the call fails.
+//         * @returns The list of activities that have been updated in the itinerary.
+//         */
+//    async addActivityToItinerary(email, tripName, cityCountry, name, errorCallback) {
+//            try {
+//                const token = await this.getTokenOrThrow("Only authenticated users can add a song to a playlist.");
+//                const response = await this.axiosClient.post(`itineraries/${email}/${tripName}/activities`, {
+//                    email: email,
+//                    tripName: tripName,
+//                    cityCountry: cityCountry,
+//                    name: name
+//              }, {
+//                  headers: {
+//                      Authorization: `Bearer ${token}`
+//                  }
+//              });
+//                return response.data.activityList;
+//            } catch (error) {
+//                this.handleError(error, errorCallback)
+//            }
+//        }
+//    async removeActivityFromItinerary(email, tripName, cityCountry, name, errorCallback) {
+//            try {
+//                const token = await this.getTokenOrThrow("Only authenticated users can add a song to a playlist.");
+//                const response = await this.axiosClient.put(`itineraries/${email}/${tripName}/activities`, {
+//                    email: email,
+//                    tripName: tripName,
+//                    cityCountry: cityCountry,
+//                    name: name
+//              }, {
+//                  headers: {
+//                      Authorization: `Bearer ${token}`
+//                  }
+//              });
+//                return response.data.activityList;
+//            } catch (error) {
+//                this.handleError(error, errorCallback)
+//            }
+//        }
+//
+//    /**
+//     * Search for itineraries that match the search criteria.
+//     * @param criteria A string containing search criteria to pass to the API.
+//     * @returns The itineraries that match the search criteria.
+//     */
+//    async search(criteria, errorCallback) {
+//        try {
+//            const queryParams = new URLSearchParams({ q: criteria })
+//            const queryString = queryParams.toString();
+//console.log(queryString);
+//            const response = await this.axiosClient.get(`itineraries/search?${queryString}`);
+//
+//            return response.data.itineraries;
+//        } catch (error) {
+//            this.handleError(error, errorCallback)
+//        }
+//
+//    }
+//    async searchActivities(cityCountry, errorCallback) {
+//        try{
+//            const response = await this.axiosClient.get(`activities/search?cityCountry=${cityCountry}`);
+//            return response.data.activityModelsList;
+//        } catch (error) {
+//            this.handleError(error, errorCallback);
+//        }
+//    }
 
     /**
      * Helper method to log the error and run any error functions.

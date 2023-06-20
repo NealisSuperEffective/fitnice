@@ -59,19 +59,15 @@ class GetWorkout extends BindingClass {
         // Prevent submitting the from from reloading the page.
         evt.preventDefault();
 
-        const searchCriteria = document.getElementById('date').value;
-        const previousSearchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
+        const searchDate = document.getElementById('date').value;
+        const searchName = document.getElementById('name').value;
 
-        // If the user didn't change the search criteria, do nothing
-        if (previousSearchCriteria === searchCriteria) {
-            return;
-        }
-
-        if (searchCriteria) {
-            const results = await this.client.search(searchCriteria);
+        if (searchDate && searchName) {
+            const results = await this.client.getWorkout(searchDate, searchName);
 
             this.dataStore.setState({
-                [SEARCH_CRITERIA_KEY]: searchCriteria,
+                [SEARCH_CRITERIA_DATE]: searchDate,
+                [SEARCH_CRITERIA_NAME]: searchName,
                 [SEARCH_RESULTS_KEY]: results,
             });
         } else {
@@ -83,20 +79,22 @@ class GetWorkout extends BindingClass {
      * Pulls search results from the datastore and displays them on the html page.
      */
     displaySearchResults() {
-        const searchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
+        const searchDate = this.dataStore.get(SEARCH_CRITERIA_DATE);
+        const searchName = this.dataStore.get(SEARCH_CRITERIA_NAME);
         const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY);
 
         const searchResultsContainer = document.getElementById('search-results-container');
         const searchCriteriaDisplay = document.getElementById('search-criteria-display');
         const searchResultsDisplay = document.getElementById('search-results-display');
 
-        if (searchCriteria === '') {
+        if (searchDate === '' && searchName === '') {
             searchResultsContainer.classList.add('hidden');
             searchCriteriaDisplay.innerHTML = '';
             searchResultsDisplay.innerHTML = '';
         } else {
             searchResultsContainer.classList.remove('hidden');
             searchCriteriaDisplay.innerHTML = `"${date}"`;
+            searchCriteriaDisplay.innerHTML = `"${name}"`;
             searchResultsDisplay.innerHTML = this.getHTMLForSearchResults(searchResults);
         }
         document.getElementById("search-workouts-form").reset();

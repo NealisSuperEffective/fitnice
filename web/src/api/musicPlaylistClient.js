@@ -116,7 +116,7 @@ export default class MusicPlaylistClient extends BindingClass {
     async createWorkout(date, name, tags, description, exercises, errorCallback) {
 
         try {
-            const token = await this.getTokenOrThrow("Only authenticated users can create itineraries.");
+            const token = await this.getTokenOrThrow("Only authenticated users can create workouts.");
             const response = await this.axiosClient.post(`workouts`, {
                 date: date,
                 name: name,

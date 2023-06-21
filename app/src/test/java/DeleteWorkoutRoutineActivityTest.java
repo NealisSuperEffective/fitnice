@@ -51,6 +51,5 @@ public class DeleteWorkoutRoutineActivityTest {
         // Assert the result
         WorkoutRoutineModel workoutRoutineModel = result.getWorkoutRoutine();
         assertEquals("SampleRoutine", workoutRoutineModel.getName());
-        // Add additional assertions for other fields if needed
     }
 }

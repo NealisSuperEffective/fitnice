@@ -36,12 +36,22 @@
     </div>
 </nav>
 <div class="card">
-    <h3>Workout: </h3> <h3 id="date"></h3>
+    <h3>Workout: </h3>
+    <form class="card-content" id="search-workouts-form">
+        <p class="form-field">
+            <label>Enter Workout Date</label>
+            <input type="text" class="validated-field" id="date" placeholder="2023/06/07" autofocus>
+        </p><p class="form-field">
+        <label>Enter Workout Name</label>
+        <input type="text" class="validated-field" id="name" placeholder="Chest/Legs" autofocus>
+    </p>
+    </form>
+    <p class="button-group">
+        <a href="" class="button" id="search-button">Search Workouts </a>
+    </p>
 </div>
 <div class="card">
     <table><tr><th>Name</th><th>Tags</th><th>Description</th><th>Exercises</th></tr>
-        <td class="name" id="name">
-        </td>
         <td class="tags" id="tags">
         </td>
         <td class="description" id="description">
@@ -49,6 +59,12 @@
         <td class="exercises" id="exercises">
         </td>
     </table>
+</div>
+
+<div class="card" id='search-results-container'>
+    <h3>Results for <span id="search-criteria-display"></span></h3>
+    <div id="search-results-display">
+    </div>
 </div>
 
 </body>

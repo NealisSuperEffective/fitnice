@@ -8,7 +8,7 @@ public class DeleteWorkoutRoutineResult {
     private DeleteWorkoutRoutineResult(WorkoutRoutineModel workoutRoutine) {
         this.workoutRoutine = workoutRoutine;
     }
-    public WorkoutRoutineModel deleteWorkoutRoutine() {
+    public WorkoutRoutineModel getWorkoutRoutine() {
         return workoutRoutine;
     }
     @Override

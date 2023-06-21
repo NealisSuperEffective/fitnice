@@ -68,7 +68,7 @@ class GetWorkoutRoutine extends BindingClass {
         }
 
         if (searchCriteria) {
-            const results = await this.client.search(searchCriteria);
+            const results = await this.client.getWorkoutRoutine(searchCriteria);
 
             this.dataStore.setState({
                 [SEARCH_CRITERIA_KEY]: searchCriteria,

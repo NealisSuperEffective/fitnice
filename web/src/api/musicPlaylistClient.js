@@ -16,7 +16,7 @@ export default class MusicPlaylistClient extends BindingClass {
         super();
 
         const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getTokenOrThrow',
-        'getWorkout', 'getWorkoutRoutine', 'createWorkout', 'createWorkoutRoutine'];
+        'getWorkout', 'getWorkoutRoutine', 'createWorkout', 'createWorkoutRoutine', 'deleteWorkoutRoutine'];
 
         this.bindClassMethods(methodsToBind, this);
         this.authenticator = new Authenticator();
@@ -77,10 +77,10 @@ export default class MusicPlaylistClient extends BindingClass {
      * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The playlist's metadata.
      */
-    async getWorkout(date, errorCallback) {
+    async getWorkout(date, name, errorCallback) {
 
           try {
-              const response = await this.axiosClient.get(`workouts/${date}`);
+              const response = await this.axiosClient.get(`workouts/${date}/${name}`);
               return response.data.workout;
           } catch (error) {
               this.handleError(error, errorCallback)
@@ -93,11 +93,11 @@ export default class MusicPlaylistClient extends BindingClass {
      * @param errorCallback (Optional) A function to execute if the call fails.
      * @returns The list of activities in an itinerary.
      */
-    async getWorkoutRoutine(name, errorCallback) {
+    async getWorkoutRoutine(routineName, errorCallback) {
 
         try {
            // const response = await this.axiosClient.get(`itineraries/${id}/activities`);
-           const response = await this.axiosClient.get(`workoutRoutines/${name}`);
+           const response = await this.axiosClient.get(`workoutRoutines/${routineName}`);
             return response.data.workoutRoutines;
         } catch (error) {
             this.handleError(error, errorCallback)
@@ -116,7 +116,7 @@ export default class MusicPlaylistClient extends BindingClass {
     async createWorkout(date, name, tags, description, exercises, errorCallback) {
 
         try {
-            const token = await this.getTokenOrThrow("Only authenticated users can create itineraries.");
+            const token = await this.getTokenOrThrow("Only authenticated users can create workouts.");
             const response = await this.axiosClient.post(`workouts`, {
                 date: date,
                 name: name,
@@ -153,6 +153,17 @@ export default class MusicPlaylistClient extends BindingClass {
             } catch (error) {
                 this.handleError(error, errorCallback)
             }
+        }
+
+        async deleteWorkoutRoutine(name, errorCallback) {
+
+                try {
+                   // const response = await this.axiosClient.get(`itineraries/${id}/activities`);
+                   const response = await this.axiosClient.delete(`workoutRoutines/${name}`);
+                    return response.data.workoutRoutines;
+                } catch (error) {
+                    this.handleError(error, errorCallback)
+                }
         }
 
     /**

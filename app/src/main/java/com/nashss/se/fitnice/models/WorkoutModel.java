@@ -91,7 +91,7 @@ public class WorkoutModel {
         }
 
         public WorkoutModel build() {
-            return new WorkoutModel(name, date, tags, description, exercises);
+            return new WorkoutModel(date, name, tags, description, exercises);
         }
     }
 }

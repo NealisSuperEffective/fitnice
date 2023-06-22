@@ -25,7 +25,7 @@ public class GetWorkoutActivityTest {
     }
 
     @Test
-    public void handleRequest_savedItineraryFound_returnsWorkoutModelInResult() {
+    public void handleRequest_savedWorkoutFound_returnsWorkoutModelInResult() {
         // GIVEN
         String expectedDate = "expectedDate";
         String expectedName = "expectedName";

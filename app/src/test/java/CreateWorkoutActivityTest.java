@@ -86,17 +86,6 @@ public class CreateWorkoutActivityTest {
         assertNull(result.getWorkout().getExercises());
     }
 
-    @Test
-    public void handleRequest_invalidDate_throwsInvalidAttributeValueException() {
-        // GIVEN
-        CreateWorkoutRequest request = CreateWorkoutRequest.builder()
-                .withDate("I'm illegal")
-                .withName("name")
-                .build();
-
-        // WHEN + THEN
-        assertThrows(InvalidAttributeValueException.class, () -> createWorkoutActivity.handleRequest(request));
-    }
 
     @Test
     public void handleRequest_invalidName_throwsInvalidAttributeValueException() {

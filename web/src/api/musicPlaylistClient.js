@@ -98,7 +98,7 @@ export default class MusicPlaylistClient extends BindingClass {
         try {
            // const response = await this.axiosClient.get(`itineraries/${id}/activities`);
            const response = await this.axiosClient.get(`workoutRoutines/${routineName}`);
-            return response.data.workoutRoutines;
+            return response.data.workoutRoutine;
         } catch (error) {
             this.handleError(error, errorCallback)
         }
@@ -136,13 +136,13 @@ export default class MusicPlaylistClient extends BindingClass {
         }
     }
 
-        async createWorkoutRoutine(name, tags, description, exercises, errorCallback) {
+        async createWorkoutRoutine(routineName, tags, description, exercises, errorCallback) {
 
             try {
                 const token = await this.getTokenOrThrow("Only authenticated users can create workoutRoutines.");
 
                 const response = await this.axiosClient.post(`workoutRoutines`, {
-                    name: name,
+                    routineName: routineName,
                     tags: tags,
                     description: description,
                     exercises: exercises,
@@ -157,15 +157,19 @@ export default class MusicPlaylistClient extends BindingClass {
             }
         }
 
-        async deleteWorkoutRoutine(name, errorCallback) {
-
-                try {
-                     const token = await this.getTokenOrThrow("Only authenticated users can delete workoutRoutines.");
-                     const response = await this.axiosClient.delete(`workoutRoutines/${name}`);
-                     return response.data.workoutRoutines;
-                } catch (error) {
-                    this.handleError(error, errorCallback)
-                }
+        async deleteWorkoutRoutine(routineName, errorCallback) {
+        try{
+            const token = await this.getTokenOrThrow("Only authenticated users can delete workoutRoutines.");
+            await this.axiosClient.delete(`workoutRoutines/${routineName}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+            });
+            return true;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+            return false;
+        }
         }
 
     /**

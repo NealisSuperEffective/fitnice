@@ -34,7 +34,7 @@ public class VModelConverter {
         return WorkoutModel.builder()
                 .withDate(workout.getDate())
                 .withName(workout.getName())
-                .withTags(new ArrayList<>(workout.getTags()))
+                .withTags(workout.getTags())
                 .withDescription(workout.getDescription())
                 .withExercises(workout.getExercises())
                 .build();

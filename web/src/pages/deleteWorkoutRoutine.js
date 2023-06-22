@@ -2,7 +2,6 @@ import MusicPlaylistClient from '../api/musicPlaylistClient';
 import Header from '../components/header';
 import BindingClass from '../util/bindingClass';
 import DataStore from '../util/DataStore';
-
 /**
  * Logic needed for the view table page of the website.
  */
@@ -14,8 +13,8 @@ class DeleteWorkoutRoutine extends BindingClass {
 
         // Create a new datastore with an initial "empty" state.
         this.dataStore = new DataStore();
-        this.table = new Table(this.dataStore);
         this.header = new Header(this.dataStore);
+        this.client = new MusicPlaylistClient(this.dataStore);
     }
 
     /**
@@ -23,10 +22,9 @@ class DeleteWorkoutRoutine extends BindingClass {
          */
     mount() {
         console.log('deleteWorkoutRoutine.js mounting...');
-        this.table.addTableToPage();
         var deleteButton = document.getElementById("delete-workoutRoutine");
         deleteButton.addEventListener("click", (event) => this.deleteWorkoutRoutine(event));
-        this.client = new MusicPlaylistClient();
+//        this.client = new MusicPlaylistClient();
 }
 
 
@@ -63,11 +61,12 @@ class DeleteWorkoutRoutine extends BindingClass {
     async deleteWorkoutRoutine(event) {
         event.preventDefault();
         console.log("howdy from deleteWorkoutRoutine method")
-        const form = document.getElementById("delete-workoutRoutine-form");
-        const routineName = form.elements["routineName"].value;
+        const routineName = document.getElementById('routineName').value;
+//        const form = document.getElementById("delete-workoutRoutine-form");
+//        const routineName = form.elements["routineName"].value;
 
         try {
-            const updateRequest = await this.client.deleteWorkoutRoutine(workoutRoutine);
+            const updateRequest = await this.client.deleteWorkoutRoutine(routineName);
             alert('Routine deleted successfully!');
             window.location.reload();
         } catch (error) {

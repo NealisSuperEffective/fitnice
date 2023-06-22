@@ -50,12 +50,6 @@ class CreateWorkoutRoutine extends BindingClass {
             } else {
                 tags = tagsText.split(/\s*,\s*/);
             }
-            let description;
-            if (descriptionText.length < 1) {
-                description = null;
-            } else {
-                description = descriptionText.split(/\s*,\s*/);
-            }
             let exercises;
             if (exercisesText.length < 1) {
                 exercises = null;
@@ -63,7 +57,7 @@ class CreateWorkoutRoutine extends BindingClass {
                 exercises = exercisesText.split(/\s*,\s*/);
             }
 
-            const workoutRoutine = await this.client.createWorkoutRoutine(routineName, tags, description, exercises, (error) => {
+            const workoutRoutine = await this.client.createWorkoutRoutine(routineName, tags, descriptionText, exercises, (error) => {
                 createButton.innerText = origButtonText;
                 errorMessageDisplay.innerText = `Error: ${error.message}`;
                 errorMessageDisplay.classList.remove('hidden');

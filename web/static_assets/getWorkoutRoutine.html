@@ -37,26 +37,33 @@
 </nav>
 <div class="card">
     <h3>Workout Routine: </h3>
-    <form class="card-content" id="search-workoutsRoutines-form">
+    <form class="card-content" id="search-workoutRoutines-form">
         <p class="form-field">
             <label>Enter WorkoutRoutine Name</label>
-            <input type="text" class="validated-field" id="routineName" placeholder="Chest/Legs" autofocus>
+            <input type="text" class="validated-field" id="routineName" placeholder="Chest-Legs" autofocus>
         </p>
     </form>
     <p class="button-group">
         <a href="" class="button" id="search-button">Search WorkoutRoutines </a>
     </p>
 </div>
-<div class="card">
-    <table><tr><th>Tags</th><th>Description</th><th>Exercises</th></tr>
-        <td class="tags" id="tags">
-        </td>
-        <td class="description" id="description">
-        </td>
-        <td class="exercises" id="exercises">
-        </td>
-    </table>
+
+<div class="card" id='search-results-container'>
+    <h3>Results for <span id="search-criteria-display"></span></h3>
+    <div id="search-results-display">
+    </div>
 </div>
+
+<!--<div class="card">-->
+<!--    <table><tr><th>Tags</th><th>Description</th><th>Exercises</th></tr>-->
+<!--        <td class="tags" id="tags">-->
+<!--        </td>-->
+<!--        <td class="description" id="description">-->
+<!--        </td>-->
+<!--        <td class="exercises" id="exercises">-->
+<!--        </td>-->
+<!--    </table>-->
+<!--</div>-->
 
 </body>
 <footer>

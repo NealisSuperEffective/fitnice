@@ -14,10 +14,12 @@ const EMPTY_DATASTORE_STATE = {
 The "KEY" constants will be reused a few times below.
 */
 
-const SEARCH_CRITERIA_KEY = 'date';
+const SEARCH_CRITERIA_DATE = 'date';
+const SEARCH_CRITERIA_NAME = 'name';
 const SEARCH_RESULTS_KEY = 'search-results';
 const EMPTY_DATASTORE_STATE = {
-    [SEARCH_CRITERIA_KEY]: '',
+    [SEARCH_CRITERIA_DATE]: '',
+    [SEARCH_CRITERIA_NAME]: '',
     [SEARCH_RESULTS_KEY]: [],
 };
 
@@ -59,15 +61,15 @@ class GetWorkout extends BindingClass {
         // Prevent submitting the from from reloading the page.
         evt.preventDefault();
 
-        const searchDate = document.getElementById('date').value;
-        const searchName = document.getElementById('name').value;
+        const date = document.getElementById('date').value;
+        const name = document.getElementById('name').value;
 
-        if (searchDate && searchName) {
-            const results = await this.client.getWorkout(searchDate, searchName);
+        if (date && name) {
+            const results = await this.client.getWorkout(date, name);
 
             this.dataStore.setState({
-                [SEARCH_CRITERIA_DATE]: searchDate,
-                [SEARCH_CRITERIA_NAME]: searchName,
+                [SEARCH_CRITERIA_DATE]: date,
+                [SEARCH_CRITERIA_NAME]: name,
                 [SEARCH_RESULTS_KEY]: results,
             });
         } else {
@@ -79,15 +81,15 @@ class GetWorkout extends BindingClass {
      * Pulls search results from the datastore and displays them on the html page.
      */
     displaySearchResults() {
-        const searchDate = this.dataStore.get(SEARCH_CRITERIA_DATE);
-        const searchName = this.dataStore.get(SEARCH_CRITERIA_NAME);
+        const date = this.dataStore.get(SEARCH_CRITERIA_DATE);
+        const name = this.dataStore.get(SEARCH_CRITERIA_NAME);
         const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY);
 
         const searchResultsContainer = document.getElementById('search-results-container');
         const searchCriteriaDisplay = document.getElementById('search-criteria-display');
         const searchResultsDisplay = document.getElementById('search-results-display');
 
-        if (searchDate === '' && searchName === '') {
+        if (date === '' && name === '') {
             searchResultsContainer.classList.add('hidden');
             searchCriteriaDisplay.innerHTML = '';
             searchResultsDisplay.innerHTML = '';
@@ -95,6 +97,7 @@ class GetWorkout extends BindingClass {
             searchResultsContainer.classList.remove('hidden');
             searchCriteriaDisplay.innerHTML = `"${date}"`;
             searchCriteriaDisplay.innerHTML = `"${name}"`;
+            console.log(searchResults)
             searchResultsDisplay.innerHTML = this.getHTMLForSearchResults(searchResults);
         }
         document.getElementById("search-workouts-form").reset();
@@ -106,19 +109,24 @@ class GetWorkout extends BindingClass {
      * @returns A string of HTML suitable for being dropped on the page.
      */
     getHTMLForSearchResults(searchResults) {
-        if (searchResults.length === 0) {
+        if (searchResults === undefined) {
             return '<h4>No results found</h4>';
         }
 
-        let html = '<table><tr><th>Date</th><th>Name</th></tr>';
-        for (const res of searchResults) {
+        let html = '<table><tr><th>Date</th><th>Name</th><th>Tags</th><th>Description</th><th>Exercises</th></tr>';
+            if((searchResults.date != date) || (searchResults.name != name)) {
+            console.log(searchResults.tags)
+//        for (const res of searchResults) {
             html += `
             <tr>
                 <td>
-                    <a href="getWorkout.html?date=${res.date}&name=${res.name}&tags=${res.tags}&description=${res.description}&exercises=${res.exercises}">${res.date}</a>
+                    <a href="getWorkout.html?date=${searchResults.date}&name=${searchResults.name}&tags=${searchResults.tags}&description=${searchResults.description}&exercises=${searchResults.exercises}">${searchResults.date}</a>
                 </td>
-                <td>${res.date}</td>
-//                <td>${res.tags?.join(', ')}</td>
+                <td>${searchResults.name}</td>
+                <td>${searchResults.tags}</td>
+                <td>${searchResults.description}</td>
+                <td>${searchResults.exercises}</td>
+
             </tr>`;
         }
         html += '</table>';

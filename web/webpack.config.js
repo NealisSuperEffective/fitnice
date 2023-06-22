@@ -27,7 +27,7 @@ module.exports = {
     createWorkoutRoutine: path.resolve(__dirname, 'src', 'pages', 'createWorkoutRoutine.js'),
     getWorkout: path.resolve(__dirname, 'src','pages', 'getWorkout.js'),
     getWorkoutRoutine: path.resolve(__dirname, 'src','pages', 'getWorkoutRoutine.js'),
-//    updateWorkoutRoutine: path.resolve(__dirname, 'src', 'pages', 'updateWorkoutRoutine.js'),
+    deleteWorkoutRoutine: path.resolve(__dirname, 'src', 'pages', 'deleteWorkoutRoutine.js'),
   },
   output: {
     path: path.resolve(__dirname, 'build', 'assets'),

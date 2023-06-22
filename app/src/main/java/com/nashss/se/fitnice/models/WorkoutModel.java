@@ -7,11 +7,11 @@ import java.util.Set;
 public class WorkoutModel {
     private String date;
     private String name;
-    private List<String> tags;
+    private Set<String> tags;
     private String description;
     private List<String> exercises;
 
-    public WorkoutModel(String date, String name, List<String> tags, String description, List<String> exercises) {
+    public WorkoutModel(String date, String name, Set<String> tags, String description, List<String> exercises) {
         this.name = name;
         this.date = date;
         this.tags = tags;
@@ -27,7 +27,7 @@ public class WorkoutModel {
         return date;
     }
 
-    public List<String> getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
@@ -60,7 +60,7 @@ public class WorkoutModel {
     public static class Builder {
         private String date;
         private String name;
-        private List<String> tags;
+        private Set<String> tags;
         private String description;
         private List<String> exercises;
 
@@ -75,7 +75,7 @@ public class WorkoutModel {
             return this;
         }
 
-        public Builder withTags(List<String> tags) {
+        public Builder withTags(Set<String> tags) {
             this.tags = tags;
             return this;
         }

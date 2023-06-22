@@ -45,24 +45,25 @@ class CreateWorkout extends BindingClass {
             const descriptionText = document.getElementById('description').value;
             const exercisesText = document.getElementById('exercises').value;
 
+            let date = dateText;
             let tags;
             if (tagsText.length < 1) {
                 tags = null;
             } else {
                 tags = tagsText.split(/\s*,\s*/);
             }
-            let name;
-            if (nameText.length < 1) {
-                name = null;
-            } else {
-                name = nameText.split(/\s*,\s*/);
-            }
-            let description;
-            if (descriptionText.length < 1) {
-                description = null;
-            } else {
-                description = descriptionText.split(/\s*,\s*/);
-            }
+            let name = nameText;
+//            if (nameText.length < 1) {
+//                name = null;
+//            } else {
+//                name = nameText.split(/\s*,\s*/);
+//            }
+            let description = descriptionText;
+//            if (descriptionText.length < 1) {
+//                description = null;
+//            } else {
+//                description = descriptionText.split(/\s*,\s*/);
+//            }
             let exercises;
             if (exercisesText.length < 1) {
                 exercises = null;

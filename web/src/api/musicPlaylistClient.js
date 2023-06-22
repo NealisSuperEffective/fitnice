@@ -125,9 +125,11 @@ export default class MusicPlaylistClient extends BindingClass {
                 exercises: exercises,
             }, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 }
             });
+            console.log(response)
             return response.data.workout;
         } catch (error) {
             this.handleError(error, errorCallback)
@@ -137,7 +139,7 @@ export default class MusicPlaylistClient extends BindingClass {
         async createWorkoutRoutine(name, tags, description, exercises, errorCallback) {
 
             try {
-                const token = await this.getTokenOrThrow("Only authenticated users can create activities.");
+                const token = await this.getTokenOrThrow("Only authenticated users can create workoutRoutines.");
 
                 const response = await this.axiosClient.post(`workoutRoutines`, {
                     name: name,
@@ -158,9 +160,9 @@ export default class MusicPlaylistClient extends BindingClass {
         async deleteWorkoutRoutine(name, errorCallback) {
 
                 try {
-                   // const response = await this.axiosClient.get(`itineraries/${id}/activities`);
-                   const response = await this.axiosClient.delete(`workoutRoutines/${name}`);
-                    return response.data.workoutRoutines;
+                     const token = await this.getTokenOrThrow("Only authenticated users can delete workoutRoutines.");
+                     const response = await this.axiosClient.delete(`workoutRoutines/${name}`);
+                     return response.data.workoutRoutines;
                 } catch (error) {
                     this.handleError(error, errorCallback)
                 }

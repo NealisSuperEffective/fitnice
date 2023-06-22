@@ -69,7 +69,11 @@ class CreateWorkout extends BindingClass {
             } else {
                 exercises = exercisesText.split(/\s*,\s*/);
             }
-
+            console.log('date: '  + typeof(dateText));
+            console.log('name: '  + typeof(nameText));
+            console.log('tags: '  + typeof(tagsText));
+            console.log('description: '  + typeof(descriptionText));
+            console.log('exercises: '  + typeof(exercisesText));
             const workout = await this.client.createWorkout(date, name, tags, description, exercises, (error) => {
                 createButton.innerText = origButtonText;
                 errorMessageDisplay.innerText = `Error: ${error.message}`;

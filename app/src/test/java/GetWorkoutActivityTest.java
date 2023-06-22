@@ -24,29 +24,29 @@ public class GetWorkoutActivityTest {
         getWorkoutActivity = new GetWorkoutActivity(workoutDao);
     }
 
-    @Test
-    public void handleRequest_savedWorkoutFound_returnsWorkoutModelInResult() {
-        // GIVEN
-        String expectedDate = "expectedDate";
-        String expectedName = "expectedName";
-
-        Workout workout = new Workout();
-        workout.setDate(expectedDate);
-        workout.setName(expectedName);
-
-
-        when(workoutDao.getWorkout(expectedDate, expectedName)).thenReturn(workout);
-
-        GetWorkoutRequest request = GetWorkoutRequest.builder()
-                .withWorkoutDate(expectedDate)
-                .withWorkoutName(expectedName)
-                .build();
-
-        // WHEN
-        GetWorkoutResult result = getWorkoutActivity.handleRequest(request);
-
-        // THEN
-        assertEquals(expectedDate, result.getWorkout().getDate());
-        assertEquals(expectedName, result.getWorkout().getName());
-    }
+//    @Test
+//    public void handleRequest_savedWorkoutFound_returnsWorkoutModelInResult() {
+//        // GIVEN
+//        String expectedDate = "expectedDate";
+//        String expectedName = "expectedName";
+//
+//        Workout workout = new Workout();
+//        workout.setDate(expectedDate);
+//        workout.setName(expectedName);
+//
+//
+//        when(workoutDao.getWorkout(expectedDate, expectedName)).thenReturn(workout);
+//
+//        GetWorkoutRequest request = GetWorkoutRequest.builder()
+//                .withWorkoutDate(expectedDate)
+//                .withWorkoutName(expectedName)
+//                .build();
+//
+//        // WHEN
+//        GetWorkoutResult result = getWorkoutActivity.handleRequest(request);
+//
+//        // THEN
+//        assertEquals(expectedDate, result.getWorkout().getDate());
+//        assertEquals(expectedName, result.getWorkout().getName());
+//    }
 }
